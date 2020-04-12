@@ -2,7 +2,7 @@
 ## EPITECH PROJECT, 2019
 ## SOURCES MAKEFILE
 ## File description:
-## SERVER MAKER
+## STEP1
 ##
 
 NAME	=	../server

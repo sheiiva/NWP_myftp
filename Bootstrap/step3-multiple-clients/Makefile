@@ -2,7 +2,7 @@
 ## EPITECH PROJECT, 2019
 ## SOURCES MAKEFILE
 ## File description:
-## BINARY MAKER
+## STEP4
 ##
 
 NAME	=	../mulclients

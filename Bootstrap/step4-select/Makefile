@@ -2,10 +2,10 @@
 ## EPITECH PROJECT, 2019
 ## SOURCES MAKEFILE
 ## File description:
-## STEP2
+## STEP4
 ##
 
-NAME	=	../client
+NAME	=	../select
 
 INCLUDE_PATH		=	include/
 SOURCES_PATH		=	sources/
