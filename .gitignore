@@ -1,4 +1,4 @@
-### C++ ###
+### C ###
 # Prerequisites
 *.d
 
@@ -54,6 +54,7 @@ dkms.conf
 .vscode
 Cmake*
 cmake*
+core*
 vgcore*
 *.html
 *.gcda
@@ -61,7 +62,4 @@ vgcore*
 critests
 
 # BINARY
-arcade
-
-# DOCKER
-run
+myftp
