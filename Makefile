@@ -5,34 +5,46 @@
 ## ROOT
 ##
 
-NAME 		= 	root_makefile
+NAME		=	ALL_RULE
+CLIENT 		= 	CLIENT_RULE
+SERVER 		= 	SERVER_RULE
 
-LIB_PATH	=	./lib/
-SRC_PATH	=	./sources/
-TST_PATH	=	./tests/
+SERVER_PATH	=	server/
+CLIENT_PATH	=	client/
+TST_PATH	=	tests/
 
 CLEAN		=	clean
 FCLEAN		=	fclean
 
 $(NAME):
-	@$(MAKE) -C $(LIB_PATH)
-	@$(MAKE) -C $(SRC_PATH)
+	@$(MAKE) -C $(SERVER_PATH)
+	@$(MAKE) -C $(CLIENT_PATH)
 
 all: $(NAME)
 
+$(CLIENT):
+	@$(MAKE) -C $(CLIENT_PATH)
+
+client: $(CLIENT)
+
+$(SERVER):
+	@$(MAKE) -C $(SERVER_PATH)
+
+server: $(SERVER)
+
 clean:
-	@$(MAKE) $(CLEAN) -C $(LIB_PATH)
-	@$(MAKE) $(CLEAN) -C $(SRC_PATH)
+	@$(MAKE) $(CLEAN) -C $(SERVER_PATH)
+	@$(MAKE) $(CLEAN) -C $(CLIENT_PATH)
 	@$(MAKE) $(CLEAN) -C $(TST_PATH)
 
 fclean:
-	@$(MAKE) $(FCLEAN) -C $(LIB_PATH)
-	@$(MAKE) $(FCLEAN) -C $(SRC_PATH)
+	@$(MAKE) $(FCLEAN) -C $(SERVER_PATH)
+	@$(MAKE) $(FCLEAN) -C $(CLIENT_PATH)
 	@$(MAKE) $(FCLEAN) -C $(TST_PATH)
 
 re: fclean all
 
-tests_run: all
+tests_run: fclean
 	@$(MAKE) -C $(TST_PATH)
 
-.PHONY: all clean fclean re tests_run
+.PHONY: all clean fclean re tests_run server client

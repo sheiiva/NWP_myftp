@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2019
-** INCLUDE FILES
+** CLIENT // INCLUDE
 ** File description:
-** sources.h
+** client.h
 */
 
 #ifndef SOURCE_H_

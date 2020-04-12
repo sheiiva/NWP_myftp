@@ -1,11 +1,11 @@
 /*
 ** EPITECH PROJECT, 2019
-** SOURCES // ROOT
+** CLIENT // SOURCES
 ** File description:
 ** main.c
 */
 
-#include "sources.h"
+#include "client.h"
 
 #define BUFFERSIZE 100
 

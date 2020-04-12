@@ -1,14 +1,16 @@
 ##
 ## EPITECH PROJECT, 2019
-## SOURCES MAKEFILE
+## CLIENT
 ## File description:
-## STEP2
+## Makefile
 ##
 
-NAME	=	../client
+NAME	=	../clients
+SRC_LIB 	= 	libsrc/libclient.a
 
 INCLUDE_PATH		=	include/
 SOURCES_PATH		=	sources/
+LIBSRC_PATH         =   libsrc/
 
 override CFLAGS 	+=	-W -Wall -Werror -Wextra -I./$(INCLUDE_PATH)
 override LDFLAGS 	+=
@@ -19,24 +21,36 @@ SRC		=	$(SOURCES_PATH)socket_manager.c		\
 
 OBJ 	= 	$(SRC:.c=.o)
 
-LD			=	gcc
+CC		= 	gcc
+LD		=	$(CC)
 PRINT		=	@echo -e
 RM          =   @rm -f
 
 $(NAME): $(OBJ)
-	$(PRINT) "\n------->\tCOMPILED SRC DEPENDENCIES.\n\nLET'S LINK IT ALL:\n"
+	$(PRINT) "\n------->\tCOMPILED CLIENT SRC DEPENDENCIES.\n\nLET'S LINK IT ALL:\n"
 	$(LD) $(CFLAGS) $^ $(LDFLAGS) $(LDLIBS) -o $@
 	$(PRINT) "\n------->\tCONGRATS !\n"
 
+$(SRC_LIB): $(OBJ)
+	$(PRINT) "\n------->\tCOMPILED CLIENT SRC DEPENDENCIES.\n\nLET'S PACK CLIENT LIB:\n"
+	@mkdir $(LIBSRC_PATH)
+	$(AR) rc $@ $^
+	$(PRINT) "\n------->\tCONGRATS ! YOUR CLIENT LIB HAS BEEN CREATED.\n"
+
 all: $(NAME)
+
+lib: $(SRC_LIB)
 
 clean:
 	$(PRINT) "\n------->\tREMOVE TMP FILES\n"
-	$(RM) $(OBJ)
+	$(RM) $(OBJ) $(OBJ:.o=.gcno) $(OBJ:.o=.gcda)
 
 fclean: clean
 	$(PRINT) "------->\tREMOVE BINARY\n"
 	$(RM) $(NAME)
+	$(PRINT) "------->\tREMOVE CLIENT'S LIBRARY\n"
+	$(RM) $(SRC_LIB)
+	$(RM) -r $(LIBSRC_PATH)
 
 re: fclean all
 

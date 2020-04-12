@@ -1,11 +1,11 @@
 /*
 ** EPITECH PROJECT, 2019
-** SOURCES // ROOT
+** CLIENT // SOURCES
 ** File description:
 ** create_socket.c
 */
 
-#include "sources.h"
+#include "client.h"
 
 int create_socket(void)
 {

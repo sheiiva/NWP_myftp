@@ -17,30 +17,36 @@ RM			=	@rm -f
 ADD_COVERAGE	=	'CFLAGS	+=	--coverage'
 ADD_LCRITERION	=	'LDLIBS	+=	-lcriterion'
 
-TEST_SRC		=	sources/
-REC_FUNC		=	generic/
-
 ROOT_PATH		=	../
 I_PATH			=	include/
-LIB_PATH		=	$(ROOT_PATH)lib/
-LIB_I_PATH		=	$(LIB_PATH)my/$(I_PATH)
-SOURCE_PATH		=	$(ROOT_PATH)sources/
-SOURCE_LIB		= 	$(ROOT_PATH)sources/libsrc/
-SOURCE_I_PATH	=	$(ROOT_PATH)$(I_PATH)
+SERVER_PATH		=	$(ROOT_PATH)server/
+SERVER_LIB		= 	$(SERVER_PATH)libsrc/
+SERVER_I_PATH	=	$(SERVER_PATH)$(I_PATH)
+CLIENT_PATH		=	$(ROOT_PATH)client/
+CLIENT_LIB		= 	$(CLIENT_PATH)libsrc/
+CLIENT_I_PATH	=	$(CLIENT_PATH)$(I_PATH)
 
-override CFLAGS	    +=	-W -Wall -Wextra -Wextra -I./$(I_PATH) -I./$(SOURCE_I_PATH) -I./$(LIB_I_PATH) --coverage
-override LDFLAGS    += 	-L./$(SOURCE_LIB) -L./$(LIB_PATH)
-override LDLIBS     +=	-lcriterion -lsrc -lmy
+
+override CFLAGS	    +=	-W -Wall -Wextra -Wextra -I./$(SERVER_I_PATH) -I./$(CLIENT_I_PATH) --coverage
+override LDFLAGS    += 	-L./$(SERVER_LIB) -L./$(CLIENT_LIB)
+override LDLIBS     +=	-lcriterion -lserver -lclient
+
+
+TEST_SRC		=	sources/
+REC_FUNC		=	generic/
 
 SRC 	= 	$(REC_FUNC)redirect.c
 
 OBJ 	= 	$(SRC:.c=.o)
 
+
 $(NAME): $(OBJ)
 	$(PRINT) "\n------->\tCOMPILED TESTS SRC DEPENDECIES.\n"
-	@$(MAKE) -C $(LIB_PATH) $(ADD_COVERAGE) $(ADD_LCRITERION)
-	@$(MAKE) $(LIB) -C $(SOURCE_PATH) $(ADD_COVERAGE) $(ADD_LCRITERION)
+	$(MAKE) $(LIB) -C $(SERVER_PATH) $(ADD_COVERAGE) $(ADD_LCRITERION)
+	$(MAKE) $(LIB) -C $(CLIENT_PATH) $(ADD_COVERAGE) $(ADD_LCRITERION)
+	$(PRINT) "\n------->\tLET'S LINK IT ALL.\n"
 	$(LD) $^ -o $@ $(CFLAGS) $(LDFLAGS) $(LDLIBS)
+	$(PRINT) "\n------->\tCONGRATS!"
 	$(PRINT) "\n\n"
 	./$(NAME)
 	$(PRINT) "\n\n"
