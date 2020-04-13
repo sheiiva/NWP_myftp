@@ -57,15 +57,10 @@ static int server(int port)
 
 int main(int ac, char **av)
 {
-    int port = 0;
-    
     if (ac != 2 || ((ac == 2) && (!atoi(av[1])))) {
-        fprintf(stderr, "Wrong argument.");
-        printf("Please enter a port for your server.");
+        write(2, "Wrong argument.\n", 17);
+        write(1, "Please enter a port for your server.\n", 38);
         return (84);
     }
-    port = atoi(av[1]);
-    if (!port)
-        return (84);
-    return server(port);
+    return server(atoi(av[1]));
 }
