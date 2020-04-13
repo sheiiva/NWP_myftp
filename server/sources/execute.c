@@ -7,7 +7,7 @@
 
 #include "server.h"
 
-int execute(int fd_client, int fd_server, struct sockaddr_in client, struct sockaddr_in server)
+int execute(int fd_client, int fd_server, sockaddr_in_t client, sockaddr_in_t server)
 {
     (void)server;
     (void)fd_server;

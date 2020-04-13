@@ -11,7 +11,8 @@
     #define BACKLOG 2
 
     typedef struct sockaddr sockaddr_t;
-    
+    typedef struct sockaddr_in sockaddr_in_t;
+
     #include <sys/types.h>
     #include <sys/socket.h>
     #include <arpa/inet.h>

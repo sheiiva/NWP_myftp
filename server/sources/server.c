@@ -20,11 +20,11 @@ static int close_server(int fd)
     return (0);
 }
 
-static int loop(int fd_server, struct sockaddr_in server)
+static int loop(int fd_server, sockaddr_in_t server)
 {
     int ret = 0;
     int fd_client = 0;
-    struct sockaddr_in client;
+    sockaddr_in_t client;
     pid_t child = 0;
 
     while (1) {
@@ -44,7 +44,7 @@ static int loop(int fd_server, struct sockaddr_in server)
     return (ret);
 }
 
-static int init_server(int fd_server, struct sockaddr_in *server, int port)
+static int init_server(int fd_server, sockaddr_in_t *server, int port)
 {
     (*server).sin_family = AF_INET;
     (*server).sin_port = htons(port);
@@ -60,7 +60,7 @@ static int init_server(int fd_server, struct sockaddr_in *server, int port)
 int server(int port)
 {
     int fd_server = create_socket();
-    struct sockaddr_in server;
+    sockaddr_in_t server;
 
     if (fd_server == -1)
         return (84);

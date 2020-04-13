@@ -29,7 +29,7 @@ int listen_socket(int fd, int backlog)
 int accept_connection(int fd_server, struct sockaddr *addr)
 {
     int fd_client = 0;
-    socklen_t addrlen = (socklen_t)sizeof(struct sockaddr_in);
+    socklen_t addrlen = (socklen_t)sizeof(sockaddr_in_t);
 
     if ((fd_client = accept(fd_server, addr, &addrlen)) == -1) {
         perror("socket_manager.c:: Accept connection");
