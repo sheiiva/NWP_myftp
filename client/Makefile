@@ -16,8 +16,10 @@ override CFLAGS 	+=	-W -Wall -Werror -Wextra -I./$(INCLUDE_PATH)
 override LDFLAGS 	+=
 override LDLIBS 	+=
 
-SRC		=	$(SOURCES_PATH)socket_manager.c		\
-			$(SOURCES_PATH)main.c
+SRC		=	$(SOURCES_PATH)client.c				\
+			$(SOURCES_PATH)main.c				\
+			$(SOURCES_PATH)reader.c				\
+			$(SOURCES_PATH)socket_manager.c		\
 
 OBJ 	= 	$(SRC:.c=.o)
 

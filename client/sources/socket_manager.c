@@ -12,17 +12,17 @@ int create_socket(void)
     int sck = socket(AF_INET, SOCK_STREAM, 0);
 
     if (sck == -1)
-        perror(NULL);
+        perror("socket_manager.c:: Create socket");
     return sck;
 }
 
 int connect_client(int fd, struct sockaddr_in *server)
 {
    if (connect(fd, (struct sockaddr *)server, sizeof(struct sockaddr)) ==-1) {
-       perror(NULL);
-       return(84);
-   }
-   return (0);
+        perror("socket_manager.c:: Connect to server");
+        return(84);
+    }
+    return (0);
 }
 
 int init_server(char *addr, struct sockaddr_in *server, int port)
