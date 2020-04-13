@@ -22,41 +22,26 @@ static int close_server(int fd)
 
 static int loop(int fd_server, struct sockaddr_in server)
 {
+    int ret = 0;
     int fd_client = 0;
-    int sin_size = sizeof(struct sockaddr_in);
     struct sockaddr_in client;
     pid_t child = 0;
 
-    (void)server;
     while (1) {
-        // WAIT FOR CLIENT CONNECTION
-        fd_client = accept_connection(fd_server, (sockaddr_t *)&client, &sin_size);
+        fd_client = accept_connection(fd_server, (sockaddr_t *)&client);
         if (fd_client == -1)
-            return (84);
-        // CREATE A THREAD
-        if ((child = fork()) == -1) {
-            perror(NULL);
-            return (84);
+            ret = 84;
+        else if ((child = fork()) == -1) {
+            perror("server.c:: Fork");
+            ret = 84;
         } else if (!child) {
-            // WRITE TO THE CLIENT
-            if (write(fd_client, "Welcom to the server!\n", 23) == -1)
-                return (84);
-            printf("CLIENT:\n  .address: %s\n  .port: %d\n", inet_ntoa(client.sin_addr), client.sin_port);
-            // CLOSE THE CONNECTION
-            if (close(fd_client) == -1) {
-                perror(NULL);
-                return (84);
-            }
-            // break; // NEED TO KILL THE CHILD
+            if (execute(fd_client, fd_server, client, server) == 84)
+                ret = 84;
         }
     }
-    if (close(fd_server) == -1) {
-        perror(NULL);
-        return (84);
-    }
-    printf("Server closed\n");
-    return (0);
-
+    if (close_server(fd_server) == 84)
+        ret = 84;
+    return (ret);
 }
 
 static int init_server(int fd_server, struct sockaddr_in *server, int port)

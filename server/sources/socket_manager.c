@@ -26,11 +26,12 @@ int listen_socket(int fd, int backlog)
     return (0);
 }
 
-int accept_connection(int fd_server, struct sockaddr *addr, int *addrlen)
+int accept_connection(int fd_server, struct sockaddr *addr)
 {
     int fd_client = 0;
+    socklen_t addrlen = (socklen_t)sizeof(struct sockaddr_in);
 
-    if ((fd_client = accept(fd_server, addr, (socklen_t *)addrlen)) == -1) {
+    if ((fd_client = accept(fd_server, addr, &addrlen)) == -1) {
         perror("socket_manager.c:: Accept connection");
         return (-1);
     }

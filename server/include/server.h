@@ -22,8 +22,11 @@
     #include <string.h>
     #include <unistd.h>
 
-    int accept_connection(int fd_server, struct sockaddr *addr, int *addrlen);
+    int accept_connection(int fd_server, struct sockaddr *addr);
     int create_socket(void);
+    int execute(int fd_client, int fd_server,
+                struct sockaddr_in client,
+                struct sockaddr_in server);
     int listen_socket(int fd, int backlog);
     int server(int port);
 
