@@ -5,8 +5,8 @@
 ** client.h
 */
 
-#ifndef SOURCE_H_
-    #define SOURCE_H_
+#ifndef CLIENT_H_
+    #define CLIENT_H_
 
     #define BUFFERSIZE 100
     #define OPEN    1
@@ -30,4 +30,4 @@
     int init_server(char *addr, struct sockaddr_in *server, int port);
     int read_stdin(char *buffer);
 
-#endif /* !SOURCE_H_ */
+#endif /* !CLIENT_H_ */

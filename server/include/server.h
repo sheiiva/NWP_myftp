@@ -5,9 +5,13 @@
 ** server.h
 */
 
-#ifndef SOURCE_H_
-    #define SOURCE_H_
+#ifndef SERVER_H_
+    #define SERVER_H_
 
+    #define BACKLOG 2
+
+    typedef struct sockaddr sockaddr_t;
+    
     #include <sys/types.h>
     #include <sys/socket.h>
     #include <arpa/inet.h>
@@ -15,12 +19,12 @@
     #include <signal.h>
     #include <stdlib.h>
     #include <stdio.h>
+    #include <string.h>
     #include <unistd.h>
 
     int accept_connection(int fd_server, struct sockaddr *addr, int *addrlen);
-    int listen_socket(int fd, int backlog);
     int create_socket(void);
-    void bind_socket(struct sockaddr_in *struc, int fd,
-                        sa_family_t family, in_port_t port, in_addr_t addr);
+    int listen_socket(int fd, int backlog);
+    int server(int port);
 
-#endif /* !SOURCE_H_ */
+#endif /* !SERVER_H_ */
