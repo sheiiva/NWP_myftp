@@ -7,10 +7,12 @@
 
 #ifndef SOURCE_H_
     #define SOURCE_H_
-    
+
     #define BUFFERSIZE 100
     #define OPEN    1
     #define CLOSE   0
+
+    typedef struct sockaddr sockaddr_t;
 
     #include <arpa/inet.h>
     #include <sys/types.h>
