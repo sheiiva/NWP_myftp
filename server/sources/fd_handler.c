@@ -26,7 +26,7 @@ void init_fds(fd_set *readfds, server_t server, client_t *clients, int *fdmax)
 int check_each_fds(client_t *clients, fd_set *readfds)
 {
     client_t *client = clients;
-    
+
     while (client) {
         if (FD_ISSET(client->fd, readfds)) {
             printf("execute\n");

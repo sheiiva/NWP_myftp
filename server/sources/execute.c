@@ -27,7 +27,8 @@ int execute(int *status, server_t server, client_t client)
 
     memset(buffer, 0, BUFFERSIZE);
     while (strcmp(buffer, "QUIT") != 0) {
-        if ((readsize = read_input(server, (char *)buffer)) == -1)
+        readsize = read_input(server, (char *)buffer);
+        if (readsize == -1)
             return (84);
         printf("buffer: %s\n", buffer);
         write(1, buffer, readsize);

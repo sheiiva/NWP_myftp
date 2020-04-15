@@ -34,7 +34,7 @@ RM          =   @rm -f
 
 $(NAME): $(OBJ)
 	$(PRINT) "\n------->\tCOMPILED SERVER SRC DEPENDENCIES.\n\nLET'S LINK IT ALL:\n"
-	$(LD) $(CFLAGS) $^ $(LDFLAGS) $(LDLIBS) -o $@ 
+	$(LD) $(CFLAGS) $^ $(LDFLAGS) $(LDLIBS) -o $@
 	$(PRINT) "\n------->\tCONGRATS !\n"
 
 $(SRC_LIB): $(OBJ)
