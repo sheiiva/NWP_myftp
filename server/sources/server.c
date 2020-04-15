@@ -20,57 +20,66 @@ static int close_server(int fd)
     return (0);
 }
 
-static int loop(int fd_server, sockaddr_in_t server)
+static int loop(server_t server, client_t *clients, char *path)
 {
+    int fdmax = 0;
     int ret = 0;
-    int fd_client = 0;
-    sockaddr_in_t client;
-    pid_t child = 0;
+    fd_set readfds;
 
-    while (1) {
-        fd_client = accept_connection(fd_server, (sockaddr_t *)&client);
-        if (fd_client == -1)
-            ret = 84;
-        else if ((child = fork()) == -1) {
-            perror("server.c:: Fork");
-            ret = 84;
-        } else if (!child) {
-            if (execute(fd_client, fd_server, client, server) == 84)
-                ret = 84;
+    (void)path; // TO DEL
+    while (!ret) {
+        init_fds(&readfds, server, clients, &fdmax);
+        if (select(fdmax+1 , &readfds , NULL , NULL , NULL) == -1)
+            perror("server.c:: Select");
+        if (FD_ISSET(server.fd, &readfds)) {
+            ret = add_client(clients, server.fd);
+            if (!ret)
+                printf("execute\n");
+            //     ret = execute(&status, server, *clients);
         }
+        if (!ret)
+            ret = check_each_fds(clients, &readfds);
     }
-    if (close_server(fd_server) == 84)
+    if (close_server(server.fd) == 84)
         ret = 84;
-    return (ret);
+    return ((ret == 84) ? 84 : 0);
 }
 
-static int init_server(int fd_server, sockaddr_in_t *server, int port)
+static int init_server(server_t *server, int port)
 {
-    (*server).sin_family = AF_INET;
-    (*server).sin_port = htons(port);
-    (*server).sin_addr.s_addr = INADDR_ANY;
-    bzero(&((*server).sin_zero), 8);
-    if (bind(fd_server, (sockaddr_t*)server, sizeof(sockaddr_t)) == -1) {
+    int opt = OPEN;
+
+    if (setsockopt((*server).fd, SOL_SOCKET, SO_REUSEADDR,
+                    (char *)&opt, sizeof(opt)) == -1 ) {
+        perror("socket_manager.c:: Set socket options");
+        return (84);
+    }
+    (*server).socket.sin_family = AF_INET;
+    (*server).socket.sin_port = htons(port);
+    (*server).socket.sin_addr.s_addr = INADDR_ANY;
+    bzero(&((*server).socket.sin_zero), 8);
+    if (bind((*server).fd, (sockaddr_t*)&(*server).socket,
+            sizeof(sockaddr_t)) == -1) {
         perror("socket_manager.c:: Bind server");
         return (84);
     }
     return (0);
 }
 
-int server(int port)
+int server(int port, char *path)
 {
-    int fd_server = create_socket();
-    sockaddr_in_t server;
+    server_t server;
+    client_t *client = NULL;
 
-    if (fd_server == -1)
+    server.port = port;
+    server.fd = create_socket();
+    if (server.fd == -1)
         return (84);
-    if (init_server(fd_server, &server, port) == 84) {
-        close_server(fd_server);
+    if ((write(1, "Welcome on server!\n", 19) == -1)
+    || (init_server(&server, port) == 84)
+    || (listen_socket(server.fd, BACKLOG) == 84)) {
+        close_server(server.fd);
         return (84);
     }
-    if (listen_socket(fd_server, BACKLOG) == 84) {
-        close_server(fd_server);
-        return (84);
-    }
-    return loop(fd_server, server);
+    return loop(server, client, path);
 }

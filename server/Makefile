@@ -17,7 +17,9 @@ override CFLAGS 	+=	-W -Wall -Werror -Wextra -I./$(INCLUDE_PATH)
 override LDFLAGS 	+=
 override LDLIBS 	+=
 
-SRC		=	$(SRC_PATH)execute.c			\
+SRC		=	$(SRC_PATH)clients_handler.c	\
+			$(SRC_PATH)execute.c			\
+			$(SRC_PATH)fd_handler.c			\
 			$(SRC_PATH)main.c				\
 			$(SRC_PATH)server.c				\
 			$(SRC_PATH)socket_manager.c

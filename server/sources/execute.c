@@ -7,19 +7,35 @@
 
 #include "server.h"
 
-int execute(int fd_client, int fd_server, sockaddr_in_t client, sockaddr_in_t server)
+static int read_input(server_t server, char *buffer)
 {
-    (void)server;
-    (void)fd_server;
-    // WRITE TO THE CLIENT
-    if (write(fd_client, "Welcom to the server!\n", 23) == -1)
-        return (84);
-    printf("CLIENT:\n  .address: %s\n  .port: %d\n", inet_ntoa(client.sin_addr), client.sin_port);
-    // CLOSE THE CONNECTION
-    if (close(fd_client) == -1) {
+    int readsize = 0;
+
+    memset(buffer, 0, BUFFERSIZE);
+    readsize = read(server.fd, buffer, BUFFERSIZE);
+    if (readsize == -1)
+        perror("reader.c:: Read from server's fd");
+    if (readsize <= BUFFERSIZE)
+        buffer[readsize - 1] = '\0';
+    return (readsize);
+}
+
+int execute(int *status, server_t server, client_t client)
+{
+    int readsize = 0;
+    char buffer[BUFFERSIZE];
+
+    memset(buffer, 0, BUFFERSIZE);
+    while (strcmp(buffer, "QUIT") != 0) {
+        if ((readsize = read_input(server, (char *)buffer)) == -1)
+            return (84);
+        printf("buffer: %s\n", buffer);
+        write(1, buffer, readsize);
+    }
+    if (close(client.fd) == -1) {
         perror(NULL);
         return (84);
     }
-    // break; // NEED TO KILL THE CHILD
+    *status = CLOSE;
     return (0);
 }
