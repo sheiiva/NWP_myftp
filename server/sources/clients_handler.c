@@ -7,8 +7,31 @@
 
 #include "server.h"
 
-static void link_nodes(client_t *clients, client_t *new)
+static client_t *new_client(void)
 {
+    client_t *new = malloc(sizeof(client_t));
+
+    if (!new) {
+        perror("server.c:: Malloc new client");
+        return (NULL);
+    }
+    new->fd = 0;
+    memset(new->path, 0, PATHSIZE);
+    new->next = NULL;
+    new->prev = NULL;
+    return (new);
+}
+
+int add_client(client_t *clients, int fdserver)
+{
+    client_t *new = new_client();
+
+    if (!new)
+        return (84);
+    if (accept_connection(fdserver, new) == 84) {
+        free(new);
+        return (84);
+    }
     if (!clients) {
         clients = new;
         clients->next = NULL;
@@ -17,22 +40,10 @@ static void link_nodes(client_t *clients, client_t *new)
         clients->prev = new;
         new->next = clients;
         new->prev = NULL;
+        clients = new;
     }
-}
-
-int add_client(client_t *clients, int fdserver)
-{
-    client_t *new = malloc(sizeof(client_t));
-
-    if (!new) {
-        perror("server.c:: Malloc new client");
-        return (84);
-    }
-    if (accept_connection(fdserver, *new) == 84) {
-        free(new);
-        return (84);
-    }
-    link_nodes(clients, new);
+    printf("new->fd = %d\n", new->fd);
+    printf("client->fd = %d\n", clients->fd);
     return (0);
 }
 
@@ -55,6 +66,8 @@ void free_clients_list(client_t *clients)
     client_t *tmp = clients;
 
     while (tmp && tmp->next) {
+        if (close(tmp->fd) == -1)
+            perror("client_handler.c :: Close client");
         tmp = tmp->next;
         free(tmp->prev);
     }

@@ -11,7 +11,6 @@
     #define CLOSE       0
     #define OPEN        1
     #define BACKLOG     3
-    #define BUFFERSIZE  100
     #define MAX_CLIENTS 1024
 
     typedef struct sockaddr sockaddr_t;
@@ -34,10 +33,10 @@
     int close_client(client_t *clients);
     void free_clients_list(client_t *clients);
 
-    int accept_connection(int fd_server, client_t client);
+    int accept_connection(int fd_server, client_t *client);
     int check_each_fds(client_t *clients, fd_set *readfds);
     int create_socket(void);
-    int execute(int *status, server_t server, client_t client);
+    int execute(server_t *server, client_t *client);
     void init_fds(fd_set *readfds, server_t server,
                     client_t *clients, int *fdmax);
     int listen_socket(int fd, int backlog);

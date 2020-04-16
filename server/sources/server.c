@@ -34,8 +34,7 @@ static int loop(server_t server, client_t *clients, char *path)
         if (FD_ISSET(server.fd, &readfds)) {
             ret = add_client(clients, server.fd);
             if (!ret)
-                printf("execute\n");
-            //     ret = execute(&status, server, *clients);
+                ret = execute(&server, clients);
         }
         if (!ret)
             ret = check_each_fds(clients, &readfds);

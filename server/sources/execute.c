@@ -7,12 +7,12 @@
 
 #include "server.h"
 
-static int read_input(server_t server, char *buffer)
+static int read_input(int fd, char *buffer)
 {
     int readsize = 0;
 
     memset(buffer, 0, BUFFERSIZE);
-    readsize = read(server.fd, buffer, BUFFERSIZE);
+    readsize = read(fd, buffer, BUFFERSIZE);
     if (readsize == -1)
         perror("reader.c:: Read from server's fd");
     if (readsize <= BUFFERSIZE)
@@ -20,23 +20,23 @@ static int read_input(server_t server, char *buffer)
     return (readsize);
 }
 
-int execute(int *status, server_t server, client_t client)
+int execute(server_t *server, client_t *client)
 {
+    int ret = 0;
     int readsize = 0;
-    char buffer[BUFFERSIZE];
 
-    memset(buffer, 0, BUFFERSIZE);
-    while (strcmp(buffer, "QUIT") != 0) {
-        readsize = read_input(server, (char *)buffer);
-        if (readsize == -1)
-            return (84);
-        printf("buffer: %s\n", buffer);
-        write(1, buffer, readsize);
-    }
-    if (close(client.fd) == -1) {
-        perror(NULL);
+    memset((*server).buffer, 0, BUFFERSIZE);
+    printf("%d\n", client->fd);
+    printf("%s\n", (*server).buffer);
+    readsize = read_input(client->fd, (char *)(*server).buffer);
+    if (readsize == -1)
         return (84);
-    }
-    *status = CLOSE;
-    return (0);
+    printf("buffer: %s\n", server->buffer);
+    if (strcmp(server->buffer, "QUIT") != 0)
+        ret = close_client(client);
+    else
+        write(1, server->buffer, readsize);
+    //read stdin to check server closed
+    // ret = 1 if QUIT;
+    return (ret);
 }

@@ -8,6 +8,7 @@
 #ifndef ENTITIES_H_
     #define ENTITIES_H_
 
+    #define BUFFERSIZE  100
     #define PATHSIZE    256
 
     typedef struct client_s {
@@ -22,6 +23,7 @@
         int fd;
         int port;
         sockaddr_in_t socket;
+        char buffer[BUFFERSIZE];
     } server_t ;
 
 
