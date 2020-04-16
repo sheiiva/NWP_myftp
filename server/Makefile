@@ -12,12 +12,14 @@ ROOT_PATH			=	../
 SRC_PATH			=	sources/
 INCLUDE_PATH		=	include/
 LIBSRC_PATH         =   libsrc/
+LIB_PATH			=	lib/
 
 override CFLAGS 	+=	-W -Wall -Werror -Wextra -I./$(INCLUDE_PATH) -g3
 override LDFLAGS 	+=
 override LDLIBS 	+=
 
-SRC		=	$(SRC_PATH)clients_handler.c	\
+SRC		=	$(LIB_PATH)my_putnbr.c			\
+			$(SRC_PATH)clients_handler.c	\
 			$(SRC_PATH)execute.c			\
 			$(SRC_PATH)fd_handler.c			\
 			$(SRC_PATH)main.c				\
