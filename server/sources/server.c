@@ -26,21 +26,21 @@ static int loop(server_t server, client_t *clients, char *path)
     int ret = 0;
     fd_set readfds;
 
-    (void)path; // TO DEL
     while (!ret) {
         init_fds(&readfds, server, clients, &fdmax);
         if (select(fdmax+1 , &readfds , NULL , NULL , NULL) == -1)
             perror("server.c:: Select");
         if (FD_ISSET(server.fd, &readfds)) {
-            ret = add_client(clients, server.fd);
+            ret = add_client(&clients, server.fd, path);
             if (!ret)
-                ret = execute(&server, clients);
+                ret = execute(&server, clients, path);
         }
         if (!ret)
             ret = check_each_fds(clients, &readfds);
     }
     if (close_server(server.fd) == 84)
         ret = 84;
+    free_clients_list(clients);
     return ((ret == 84) ? 84 : 0);
 }
 

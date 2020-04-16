@@ -6,6 +6,7 @@
 */
 
 #include <strings.h>
+#include "lib.h"
 #include "server.h"
 
 int create_socket(void)
@@ -28,31 +29,18 @@ int listen_socket(int fd, int backlog)
 
 static int print_connection(client_t *client)
 {
-    // char port = client.socket.sin_port + '0';
-
     if (write(client->fd, "Welcom to the server!\n", 23) == -1)
         return (84);
-    // if (write    // if (write(1, "CLIENT:\n  .address: ", 21) == -1)
-    //     return (84);
-    // if (write(1, inet_ntoa(client.socket.sin_addr), 16) == -1)
-    //     return (84);
-    // if (write(1, "\n  .port: ", 11) == -1)
-    //     return (84);
-    // if (write(1, &port, 1) == -1)
-    //     return (84);
-    // if (write(1, "\n", 1) == -1)
-    //     return (84);(1, "CLIENT:\n  .address: ", 21) == -1)
-    //     return (84);
-    // if (write(1, inet_ntoa(client.socket.sin_addr), 16) == -1)
-    //     return (84);
-    // if (write(1, "\n  .port: ", 11) == -1)
-    //     return (84);
-    // if (write(1, &port, 1) == -1)
-    //     return (84);
-    // if (write(1, "\n", 1) == -1)
-    //     return (84);
-    printf("CLIENT:\n  .address: %s\n  .port: %d\n",
-            inet_ntoa(client->socket.sin_addr), client->socket.sin_port);
+    if (write(1, "CLIENT:\n  .address: ", 21) == -1)
+        return (84);
+    if (write(1, inet_ntoa(client->socket.sin_addr), 16) == -1)
+        return (84);
+    if (write(1, "\n  .port: ", 11) == -1)
+        return (84);
+    if (my_putnbr(client->socket.sin_port) == 84)
+        return (84);
+    if (write(1, "\n", 1) == -1)
+        return (84);
     return (0);
 }
 

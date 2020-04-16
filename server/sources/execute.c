@@ -20,14 +20,13 @@ static int read_input(int fd, char *buffer)
     return (readsize);
 }
 
-int execute(server_t *server, client_t *client)
+int execute(server_t *server, client_t *client, char *path)
 {
     int ret = 0;
     int readsize = 0;
 
+    (void)path;
     memset((*server).buffer, 0, BUFFERSIZE);
-    printf("%d\n", client->fd);
-    printf("%s\n", (*server).buffer);
     readsize = read_input(client->fd, (char *)(*server).buffer);
     if (readsize == -1)
         return (84);

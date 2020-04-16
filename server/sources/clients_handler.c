@@ -7,7 +7,7 @@
 
 #include "server.h"
 
-static client_t *new_client(void)
+static client_t *new_client(char *path)
 {
     client_t *new = malloc(sizeof(client_t));
 
@@ -17,14 +17,15 @@ static client_t *new_client(void)
     }
     new->fd = 0;
     memset(new->path, 0, PATHSIZE);
+    strcpy(new->path, path);
     new->next = NULL;
     new->prev = NULL;
     return (new);
 }
 
-int add_client(client_t *clients, int fdserver)
+int add_client(client_t **clients, int fdserver, char *path)
 {
-    client_t *new = new_client();
+    client_t *new = new_client(path);
 
     if (!new)
         return (84);
@@ -32,18 +33,16 @@ int add_client(client_t *clients, int fdserver)
         free(new);
         return (84);
     }
-    if (!clients) {
-        clients = new;
-        clients->next = NULL;
-        clients->prev = NULL;
+    if (!(*clients)) {
+        (*clients) = new;
+        (*clients)->next = NULL;
+        (*clients)->prev = NULL;
     } else {
-        clients->prev = new;
-        new->next = clients;
+        (*clients)->prev = new;
+        new->next = (*clients);
         new->prev = NULL;
-        clients = new;
+        (*clients) = new;
     }
-    printf("new->fd = %d\n", new->fd);
-    printf("client->fd = %d\n", clients->fd);
     return (0);
 }
 
