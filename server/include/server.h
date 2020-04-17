@@ -30,6 +30,7 @@
 
     #include "entities.h"
 
+    int show_usage(void);
 
     int add_client(client_t *clients, int fdserver,
                     char *path, int *last_client);
