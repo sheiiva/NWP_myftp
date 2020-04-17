@@ -11,8 +11,8 @@
 int cmd_noop(server_t *server, client_t *client)
 {
     (void)server;
-    if (dprintf(client->fd, READYFORNEWUSER) < 0) {
-        perror("cmd_noop.c :: Send 220 Replay-code");
+    if (dprintf(client->fd, COMMANDOK) < 0) {
+        perror("cmd_noop.c :: Send 200 Replay-code");
         return (84);
     }
     return (0);
