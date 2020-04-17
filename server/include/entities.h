@@ -12,7 +12,7 @@
     #define PATHSIZE    256
 
     #include <stdbool.h>
-    
+
     typedef struct client_s {
         int fd;
         bool connected;

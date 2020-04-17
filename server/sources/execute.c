@@ -45,7 +45,7 @@ static int command_parser(server_t *server, client_t *client)
 
     while (index < COMMANDSNBR) {
         if (!strncmp(server->buffer, commands[index].cmd, 4))
-            return (commands[index].function(server, client)); 
+            return (commands[index].function(server, client));
         index += 1;
     }
     // if (dprintf(client->fd, ERROR) < 0) {

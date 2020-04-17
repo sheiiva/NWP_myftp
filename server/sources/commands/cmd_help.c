@@ -12,6 +12,6 @@ int cmd_help(server_t *server, client_t *client)
 {
     printf("HELP\n");
     (void)server;
-    (void)client;    
+    (void)client;
     return (0);
 }
