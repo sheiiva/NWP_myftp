@@ -8,6 +8,22 @@
 #ifndef PROTOCOL_H_
     #define PROTOCOL_H_
 
+    #define CLRF    "\r\n"
+    #define SP      " "
+
+    #define USER    "USER"
+    #define PASS    "PASS"
+    #define CWD     "CWD"
+    #define CDUP    "CDUP"
+    #define PWD     "PWD"
+    #define PASV    "PASV"
+    #define PORT    "PORT"
+    #define HELPM   "HELP"
+    #define NOOP    "NOOP"
+    #define RETR    "RETR"
+    #define STOR    "STOR"
+    #define LIST    "LIST"
+
     #define READYFORNMIN        "120"
     #define TRANSFERSTART       "125"
     #define OPENDATACONNECT     "150"

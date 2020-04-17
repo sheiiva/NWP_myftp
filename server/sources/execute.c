@@ -6,6 +6,22 @@
 */
 
 #include "server.h"
+#include "protocol.h"
+
+static commands_t commands[COMMANDSNBR] = {
+            {USER,    NULL},
+            {PASS,    NULL},
+            {CWD,     NULL},
+            {CDUP,    NULL},
+            {PWD,     NULL},
+            {PASV,    NULL},
+            {PORT,    NULL},
+            {HELPM,   NULL},
+            {NOOP,    NULL},
+            {RETR,    NULL},
+            {STOR,    NULL},
+            {LIST,    NULL}
+        };
 
 static int read_input(int fd, char *buffer)
 {
@@ -20,6 +36,19 @@ static int read_input(int fd, char *buffer)
     return (readsize);
 }
 
+static int command_parser(server_t *server, client_t *clients)
+{
+    int index = 0;
+
+    (void)clients;
+    while (index < COMMANDSNBR) {
+        if (!strncmp(server->buffer, commands[index].cmd, 4))
+            printf("%s\n", commands[index].cmd); // CHANGE .cmd
+        index += 1;
+    }
+    return (0);
+}
+
 int execute(server_t *server, client_t *clients, int index)
 {
     int ret = 0;
@@ -30,8 +59,7 @@ int execute(server_t *server, client_t *clients, int index)
     if (readsize == -1 || !strncmp(server->buffer, "QUIT", 4))
         ret = close_client(clients, index);
     else {
-        write(1, server->buffer, readsize);
-        write(1, "\n", 1);
+        ret = command_parser(server, &clients[index]);
     }
     //read stdin to check server closed
     // ret = 1 if QUIT;

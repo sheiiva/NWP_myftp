@@ -61,7 +61,6 @@ static int loop(server_t server, client_t *clients, char *path)
     }
     if (close_server(server.fd) == 84)
         ret = 84;
-    // free_clients_list(clients);
     return ((ret == 84) ? 84 : 0);
 }
 

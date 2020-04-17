@@ -11,6 +11,7 @@
     #define CLOSE       0
     #define OPEN        1
     #define BACKLOG     3
+    #define COMMANDSNBR 12
     #define MAX_CLIENTS 1024
 
     typedef struct sockaddr sockaddr_t;
@@ -44,5 +45,10 @@
     int execute(server_t *server, client_t *clients, int index);
 
     int server(int port, char *path);
+
+    typedef struct commands_s {
+        char *cmd;
+        void *(*function)();
+    } commands_t;
 
 #endif /* !SERVER_H_ */

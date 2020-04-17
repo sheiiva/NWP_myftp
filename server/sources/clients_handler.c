@@ -5,8 +5,9 @@
 ** server.c
 */
 
-#include "server.h"
 #include "lib.h"
+#include "protocol.h"
+#include "server.h"
 
 void initclients(client_t *clients)
 {
@@ -32,6 +33,8 @@ int add_client(client_t *clients, int fdserver, char *path, int *last_client)
     } else {
         if (accept_connection(fdserver, &clients[index]) == 84)
             return (84);
+        if (write(clients[index].fd, READYFORNEWUSER, 3) == -1)
+            return (84);
         *last_client = index;
         strcpy(clients[index].path, path);
     }
@@ -44,6 +47,10 @@ int close_client(client_t *clients, int index)
     || (my_putnbr(clients[index].socket.sin_port) == 84)
     || (write(1, "\n", 1) == -1))
         return (84);
+    if (write(clients[index].fd, LOGOUT, 3) == -1) {
+        perror("clients_handler.c :: Send closing protocol to client");
+        return (84);
+    }
     if (close(clients[index].fd) == -1) {
         perror("clients_handler.c :: Close client");
         return (84);
