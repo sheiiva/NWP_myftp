@@ -13,12 +13,12 @@ int main(int ac, char **av)
     char path[PATHSIZE];
 
     if (ac != 3) {
-        write(2, "Wrong arguments number.\n", 25);
+        fprintf(stderr, "Wrong arguments number.\n");
         return (84);
     }
     if (!atoi(av[1])) {
-        write(2, "Wrong argument.\n", 17);
-        write(1, "Please enter a valid port for your server.\n", 38);
+        fprintf(stderr, "Wrong argument.\n");
+        printf("Please enter a valid port for your server.\n");
         return (84);
     }
     if (getcwd(path, PATHSIZE) == NULL) {

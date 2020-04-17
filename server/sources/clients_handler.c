@@ -27,13 +27,12 @@ int add_client(client_t *clients, int fdserver, char *path, int *last_client)
     while ((index < MAX_CLIENTS) && (clients[index].fd > 0))
         index += 1;
     if (index == MAX_CLIENTS) {
-        if (write(2, "Cannot connect more clients.\n", 30) == -1)
-            return (84);
+        fprintf(stderr, "Cannot connect more clients.\n");
         *last_client = -1;
     } else {
         if (accept_connection(fdserver, &clients[index]) == 84)
             return (84);
-        if (write(clients[index].fd, READYFORNEWUSER, 3) == -1)
+        if (dprintf(clients[index].fd, "%s\n", READYFORNEWUSER) < 0)
             return (84);
         *last_client = index;
         strcpy(clients[index].path, path);
@@ -43,11 +42,8 @@ int add_client(client_t *clients, int fdserver, char *path, int *last_client)
 
 int close_client(client_t *clients, int index)
 {
-    if ((write(1, "Close client from port ", 24) == -1)
-    || (my_putnbr(clients[index].socket.sin_port) == 84)
-    || (write(1, "\n", 1) == -1))
-        return (84);
-    if (write(clients[index].fd, LOGOUT, 3) == -1) {
+    printf("Close client from port %d\n", clients[index].socket.sin_port);
+    if (dprintf(clients[index].fd, LOGOUT) < 0) {
         perror("clients_handler.c :: Send closing protocol to client");
         return (84);
     }

@@ -34,10 +34,7 @@ static int close_server(int fd)
         perror("server.c:: Close socket");
         return (84);
     }
-    if (write(1, "Server closed\n", 15) == -1) {
-        perror("server.c:: Write closed state");
-        return (84);
-    }
+    printf("Server closed\n");
     return (0);
 }
 
@@ -73,7 +70,7 @@ int server(int port, char *path)
     server.fd = create_socket();
     if (server.fd == -1)
         return (84);
-    if ((write(1, "Welcome on server!\n", 19) == -1)
+    if ((printf("Welcome on server!\n") == -1)
     || (init_server(&server, port) == 84)
     || (listen_socket(server.fd, BACKLOG) == 84)) {
         close_server(server.fd);

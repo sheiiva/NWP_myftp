@@ -27,23 +27,6 @@ int listen_socket(int fd, int backlog)
     return (0);
 }
 
-static int print_connection(client_t *client)
-{
-    if (write(client->fd, "Welcom to the server!\n", 23) == -1)
-        return (84);
-    if (write(1, "CLIENT:\n  .address: ", 21) == -1)
-        return (84);
-    if (write(1, inet_ntoa(client->socket.sin_addr), 16) == -1)
-        return (84);
-    if (write(1, "\n  .port: ", 11) == -1)
-        return (84);
-    if (my_putnbr(client->socket.sin_port) == 84)
-        return (84);
-    if (write(1, "\n", 1) == -1)
-        return (84);
-    return (0);
-}
-
 int accept_connection(int fd_server, client_t *client)
 {
     socklen_t addrlen = (socklen_t)sizeof(sockaddr_in_t);
@@ -53,7 +36,11 @@ int accept_connection(int fd_server, client_t *client)
         perror("socket_manager.c:: Accept connection");
         return (84);
     }
-    if (print_connection(client) == 84)
+    if (dprintf(client->fd, "Welcom to the server!\n") == -1)
+        return (84);
+    if (printf("CLIENT:\n  .address: %s\n  .port: %d\n",
+                inet_ntoa(client->socket.sin_addr),
+                client->socket.sin_port) < 0)
         return (84);
     return (0);
 }
