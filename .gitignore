@@ -61,6 +61,8 @@ vgcore*
 *.gcno
 critests
 
+### MY_FTP PROJECT
+test_ftp.sh
 # BINARY
 myftp
 clients
