@@ -10,11 +10,9 @@
 
 int cmd_user(server_t *server, client_t *client)
 {
-    char *username = server->buffer + strlen("USER ");
-
-    printf("User name :: %s: ok\nNeed password.\n", username);
+    (void)server;
     if (dprintf(client->fd, "%s\n", USERNAMEOK) < 0) {
-        perror("cmd_noop.c :: Send 220 Replay-code");
+        perror("cmd_connect.c :: Send 331 Reply-code");
         return (84);
     }
     return (0);
@@ -22,6 +20,9 @@ int cmd_user(server_t *server, client_t *client)
 
 int cmd_pass(server_t *server, client_t *client)
 {
+    // if (!strcmp(server->buffer, "PASS "))
+        // printf("Passwork ok. %s logged in.");
+
     printf("PASS\n");
     (void)server;
     (void)client;

@@ -45,6 +45,7 @@ static int command_parser(server_t *server, client_t *client)
             return (commands[index].function(server, client)); 
         index += 1;
     }
+    printf("NO COMMAND: server->buffer = %s\n", server->buffer);
     if (dprintf(client->fd, ERROR) < 0) {
         perror("execute.c :: Send ERROR Replay-code");
         return (84);
