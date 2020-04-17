@@ -12,19 +12,25 @@ ROOT_PATH			=	../
 SRC_PATH			=	sources/
 INCLUDE_PATH		=	include/
 LIBSRC_PATH         =   libsrc/
-LIB_PATH			=	lib/
 
 override CFLAGS 	+=	-W -Wall -Werror -Wextra -I./$(INCLUDE_PATH) -g3
 override LDFLAGS 	+=
 override LDLIBS 	+=
 
-SRC		=	$(LIB_PATH)my_putnbr.c			\
-			$(SRC_PATH)clients_handler.c	\
+COMMANDS_PATH		=	$(SRC_PATH)commands/
+
+SRC		=	$(SRC_PATH)clients_handler.c	\
 			$(SRC_PATH)execute.c			\
 			$(SRC_PATH)fd_handler.c			\
 			$(SRC_PATH)main.c				\
 			$(SRC_PATH)server.c				\
-			$(SRC_PATH)socket_manager.c
+			$(SRC_PATH)socket_manager.c		\
+			$(COMMANDS_PATH)cmd_connect.c		\
+			$(COMMANDS_PATH)cmd_datatransfer.c	\
+			$(COMMANDS_PATH)cmd_help.c			\
+			$(COMMANDS_PATH)cmd_mode.c			\
+			$(COMMANDS_PATH)cmd_noop.c			\
+			$(COMMANDS_PATH)cmd_path.c			\
 
 
 OBJ 	= 	$(SRC:.c=.o)

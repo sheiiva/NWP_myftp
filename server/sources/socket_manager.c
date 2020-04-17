@@ -6,7 +6,6 @@
 */
 
 #include <strings.h>
-#include "lib.h"
 #include "server.h"
 
 int create_socket(void)

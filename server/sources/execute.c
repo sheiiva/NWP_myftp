@@ -9,18 +9,18 @@
 #include "protocol.h"
 
 static commands_t commands[COMMANDSNBR] = {
-            {USER,    NULL},
-            {PASS,    NULL},
-            {CWD,     NULL},
-            {CDUP,    NULL},
-            {PWD,     NULL},
-            {PASV,    NULL},
-            {PORT,    NULL},
-            {HELPM,   NULL},
-            {NOOP,    NULL},
-            {RETR,    NULL},
-            {STOR,    NULL},
-            {LIST,    NULL}
+            {USER,    &cmd_user},
+            {PASS,    &cmd_pass},
+            {CWD,     &cmd_cwd},
+            {CDUP,    &cmd_cdup},
+            {PWD,     &cmd_pwd},
+            {PASV,    &cmd_pasv},
+            {PORT,    &cmd_port},
+            {HELPM,   &cmd_help},
+            {NOOP,    &cmd_noop},
+            {RETR,    &cmd_retr},
+            {STOR,    &cmd_stor},
+            {LIST,    &cmd_list}
         };
 
 static int read_input(int fd, char *buffer)

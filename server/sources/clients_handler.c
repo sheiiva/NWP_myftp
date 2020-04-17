@@ -5,7 +5,6 @@
 ** server.c
 */
 
-#include "lib.h"
 #include "protocol.h"
 #include "server.h"
 
