@@ -33,7 +33,7 @@
 
     int add_client(client_t *clients, int fdserver, char *path, int *last_client);
     int close_client(client_t *clients, int index);
-    void initclients(client_t *clients);
+    void initclients(client_t *clients, char *path);
 
     void initfds(fd_set *readfds, server_t server, client_t *clients, int *fdmax);
     int checkfds(server_t *server, client_t *clients, fd_set *readfds);

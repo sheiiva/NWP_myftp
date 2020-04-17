@@ -76,6 +76,6 @@ int server(int port, char *path)
         close_server(server.fd);
         return (84);
     }
-    initclients(clients);
+    initclients(clients, path);
     return loop(server, (client_t *)clients, path);
 }

@@ -25,14 +25,17 @@ static commands_t commands[COMMANDSNBR] = {
 
 static int read_input(int fd, char *buffer)
 {
+    int i = 0;
     int readsize = 0;
 
     memset(buffer, 0, BUFFERSIZE);
     readsize = read(fd, buffer, BUFFERSIZE);
     if (readsize == -1)
         perror("reader.c:: Read from server's fd");
-    if (buffer[readsize - 1] == '\n')
-        buffer[readsize - 1] = '\0';
+    for (i = 0; i < readsize; i++) {
+        if (buffer[i] == '\r' || buffer[i] == '\n')
+            buffer[i] = '\0';
+    }
     return (readsize);
 }
 
@@ -45,11 +48,10 @@ static int command_parser(server_t *server, client_t *client)
             return (commands[index].function(server, client)); 
         index += 1;
     }
-    printf("NO COMMAND: server->buffer = %s\n", server->buffer);
-    if (dprintf(client->fd, ERROR) < 0) {
-        perror("execute.c :: Send ERROR Replay-code");
-        return (84);
-    }
+    // if (dprintf(client->fd, ERROR) < 0) {
+    //     perror("execute.c :: Send ERROR Replay-code");
+    //     return (84);
+    // }
     return (0);
 }
 

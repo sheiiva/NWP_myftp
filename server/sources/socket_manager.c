@@ -7,6 +7,7 @@
 
 #include <strings.h>
 #include "server.h"
+#include "protocol.h"
 
 int create_socket(void)
 {
@@ -35,7 +36,7 @@ int accept_connection(int fd_server, client_t *client)
         perror("socket_manager.c:: Accept connection");
         return (84);
     }
-    if (dprintf(client->fd, "Welcom to the server!\n") == -1)
+    if (dprintf(client->fd, "%s\n", READYFORNEWUSER) < 0)
         return (84);
     if (printf("CLIENT:\n  .address: %s\n  .port: %d\n",
                 inet_ntoa(client->socket.sin_addr),

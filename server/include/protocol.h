@@ -8,7 +8,7 @@
 #ifndef PROTOCOL_H_
     #define PROTOCOL_H_
 
-    #define CLRF    "\r\n"
+    #define CLRF   "\r\n"
     #define SP      " "
 
     #define USER    "USER"

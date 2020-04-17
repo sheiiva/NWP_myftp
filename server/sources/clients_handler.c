@@ -8,7 +8,7 @@
 #include "protocol.h"
 #include "server.h"
 
-void initclients(client_t *clients)
+void initclients(client_t *clients, char *path)
 {
     int index = 0;
 
@@ -16,6 +16,7 @@ void initclients(client_t *clients)
         clients[index].fd = 0;
         clients[index].connected = false;
         memset(clients[index].path, 0, PATHSIZE);
+        strcpy(clients[index].path, path);
         index += 1;
     }
 }
@@ -34,10 +35,8 @@ int add_client(client_t *clients, int fdserver, char *path, int *last_client)
     } else {
         if (accept_connection(fdserver, &clients[index]) == 84)
             return (84);
-        if (dprintf(clients[index].fd, "%s\n", READYFORNEWUSER) < 0)
-            return (84);
         *last_client = index;
-        clients[index].connected = true;
+        memset(clients[index].path, 0, PATHSIZE);
         strcpy(clients[index].path, path);
     }
     return (0);

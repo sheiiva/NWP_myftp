@@ -11,6 +11,8 @@
 int cmd_user(server_t *server, client_t *client)
 {
     (void)server;
+
+    printf("User name okay, need password.\n");
     if (dprintf(client->fd, "%s\n", USERNAMEOK) < 0) {
         perror("cmd_connect.c :: Send 331 Reply-code");
         return (84);
@@ -20,11 +22,12 @@ int cmd_user(server_t *server, client_t *client)
 
 int cmd_pass(server_t *server, client_t *client)
 {
-    // if (!strcmp(server->buffer, "PASS "))
-        // printf("Passwork ok. %s logged in.");
-
-    printf("PASS\n");
     (void)server;
-    (void)client;
-   return (0);
+    if (dprintf(client->fd, "%s\n", LOGGEDIN) < 0) {
+        perror("cmd_connect.c :: Send 331 Reply-code");
+        return (84);
+    } else
+    printf("User logged in, proceed.\n");
+    client->connected = true;
+    return (0);
 }
