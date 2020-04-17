@@ -29,17 +29,20 @@
 
     #include "entities.h"
 
-    int add_client(client_t **clients, int fdserver, char *path);
-    int close_client(client_t *clients);
-    void free_clients_list(client_t *clients);
+
+    int add_client(client_t *clients, int fdserver, char *path, int *last_client);
+    int close_client(client_t *clients, int index);
+    void initclients(client_t *clients);
+
+    void initfds(fd_set *readfds, server_t server, client_t *clients, int *fdmax);
+    int checkfds(server_t *server, client_t *clients, fd_set *readfds);
 
     int accept_connection(int fd_server, client_t *client);
-    int check_each_fds(client_t *clients, fd_set *readfds);
     int create_socket(void);
-    int execute(server_t *server, client_t *client, char *path);
-    void init_fds(fd_set *readfds, server_t server,
-                    client_t *clients, int *fdmax);
     int listen_socket(int fd, int backlog);
+
+    int execute(server_t *server, client_t *clients, int index);
+
     int server(int port, char *path);
 
 #endif /* !SERVER_H_ */

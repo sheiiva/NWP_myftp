@@ -15,8 +15,6 @@
         int fd;
         sockaddr_in_t socket;
         char path[PATHSIZE];
-        struct client_s *next;
-        struct client_s *prev;
     } client_t;
 
     typedef struct server_s {

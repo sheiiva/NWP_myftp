@@ -20,21 +20,19 @@ static int read_input(int fd, char *buffer)
     return (readsize);
 }
 
-int execute(server_t *server, client_t *client, char *path)
+int execute(server_t *server, client_t *clients, int index)
 {
     int ret = 0;
     int readsize = 0;
 
-    (void)path;
-    memset((*server).buffer, 0, BUFFERSIZE);
-    readsize = read_input(client->fd, (char *)(*server).buffer);
-    if (readsize == -1)
-        return (84);
-    printf("buffer: %s\n", server->buffer);
-    if (strcmp(server->buffer, "QUIT") != 0)
-        ret = close_client(client);
-    else
+    memset(server->buffer, 0, BUFFERSIZE);
+    readsize = read_input(clients[index].fd, (char *)server->buffer);
+    if (readsize == -1 || !strncmp(server->buffer, "QUIT", 4))
+        ret = close_client(clients, index);
+    else {
         write(1, server->buffer, readsize);
+        write(1, "\n", 1);
+    }
     //read stdin to check server closed
     // ret = 1 if QUIT;
     return (ret);

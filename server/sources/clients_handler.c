@@ -6,70 +6,49 @@
 */
 
 #include "server.h"
+#include "lib.h"
 
-static client_t *new_client(char *path)
+void initclients(client_t *clients)
 {
-    client_t *new = malloc(sizeof(client_t));
+    int index = 0;
 
-    if (!new) {
-        perror("server.c:: Malloc new client");
-        return (NULL);
+    while (index < MAX_CLIENTS) {
+        clients[index].fd = 0;
+        memset(clients[index].path, 0, PATHSIZE);
+        index += 1;
     }
-    new->fd = 0;
-    memset(new->path, 0, PATHSIZE);
-    strcpy(new->path, path);
-    new->next = NULL;
-    new->prev = NULL;
-    return (new);
 }
 
-int add_client(client_t **clients, int fdserver, char *path)
+int add_client(client_t *clients, int fdserver, char *path, int *last_client)
 {
-    client_t *new = new_client(path);
+    int index = 0;
 
-    if (!new)
-        return (84);
-    if (accept_connection(fdserver, new) == 84) {
-        free(new);
-        return (84);
-    }
-    if (!(*clients)) {
-        (*clients) = new;
-        (*clients)->next = NULL;
-        (*clients)->prev = NULL;
+    while ((index < MAX_CLIENTS) && (clients[index].fd > 0))
+        index += 1;
+    if (index == MAX_CLIENTS) {
+        if (write(2, "Cannot connect more clients.\n", 30) == -1)
+            return (84);
+        *last_client = -1;
     } else {
-        (*clients)->prev = new;
-        new->next = (*clients);
-        new->prev = NULL;
-        (*clients) = new;
+        if (accept_connection(fdserver, &clients[index]) == 84)
+            return (84);
+        *last_client = index;
+        strcpy(clients[index].path, path);
     }
     return (0);
 }
 
-int close_client(client_t *clients)
+int close_client(client_t *clients, int index)
 {
-    if (clients->next)
-        clients->next->prev = clients->prev;
-    if (clients->prev)
-        clients->prev->next = clients->next;
-    if (close(clients->fd) == -1) {
+    if ((write(1, "Close client from port ", 24) == -1)
+    || (my_putnbr(clients[index].socket.sin_port) == 84)
+    || (write(1, "\n", 1) == -1))
+        return (84);
+    if (close(clients[index].fd) == -1) {
         perror("clients_handler.c :: Close client");
         return (84);
     }
-    free(clients);
+    memset(clients[index].path, '\0', PATHSIZE);
+    clients[index].fd = 0;
     return (0);
-}
-
-void free_clients_list(client_t *clients)
-{
-    client_t *tmp = clients;
-
-    while (tmp && tmp->next) {
-        if (close(tmp->fd) == -1)
-            perror("client_handler.c :: Close client");
-        tmp = tmp->next;
-        free(tmp->prev);
-    }
-    if (tmp)
-        free(tmp);
 }

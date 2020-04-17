@@ -7,31 +7,31 @@
 
 #include "server.h"
 
-void init_fds(fd_set *readfds, server_t server, client_t *clients, int *fdmax)
+void initfds(fd_set *readfds, server_t server, client_t *clients, int *fdmax)
 {
-    client_t *client = clients;
+    int index = 0;
 
     FD_ZERO(readfds);
     FD_SET(server.fd, readfds);
     *fdmax = server.fd;
-    while (client) {
-        if (client->fd > 0)
-            FD_SET(client->fd, readfds);
-        if (client->fd > *fdmax)
-            *fdmax = client->fd;
-        client = client->next;
+    while (index < MAX_CLIENTS) {
+        if (clients[index].fd > 0)
+            FD_SET(clients[index].fd, readfds);
+        if (clients[index].fd > *fdmax)
+            *fdmax = clients[index].fd;
+        index += 1;
     }
 }
 
-int check_each_fds(client_t *clients, fd_set *readfds)
+int checkfds(server_t *server, client_t *clients, fd_set *readfds)
 {
-    client_t *client = clients;
+    int index = 0;
 
-    while (client) {
-        if (FD_ISSET(client->fd, readfds)) {
-            printf("execute\n");
-        }
-        client = client ->next;
+    while (index < MAX_CLIENTS) {
+        if ((FD_ISSET(clients[index].fd, readfds))
+            && (execute(server, clients, index) == 84))
+            return (84);
+        index += 1;
     }
     return (0);
 }

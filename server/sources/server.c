@@ -7,43 +7,6 @@
 
 #include "server.h"
 
-static int close_server(int fd)
-{
-    if (close(fd) == -1) {
-        perror("server.c:: Close socket");
-        return (84);
-    }
-    if (write(1, "Server closed\n", 15) == -1) {
-        perror("server.c:: Write closed state");
-        return (84);
-    }
-    return (0);
-}
-
-static int loop(server_t server, client_t *clients, char *path)
-{
-    int fdmax = 0;
-    int ret = 0;
-    fd_set readfds;
-
-    while (!ret) {
-        init_fds(&readfds, server, clients, &fdmax);
-        if (select(fdmax+1 , &readfds , NULL , NULL , NULL) == -1)
-            perror("server.c:: Select");
-        if (FD_ISSET(server.fd, &readfds)) {
-            ret = add_client(&clients, server.fd, path);
-            if (!ret)
-                ret = execute(&server, clients, path);
-        }
-        if (!ret)
-            ret = check_each_fds(clients, &readfds);
-    }
-    if (close_server(server.fd) == 84)
-        ret = 84;
-    free_clients_list(clients);
-    return ((ret == 84) ? 84 : 0);
-}
-
 static int init_server(server_t *server, int port)
 {
     int opt = OPEN;
@@ -65,10 +28,47 @@ static int init_server(server_t *server, int port)
     return (0);
 }
 
+static int close_server(int fd)
+{
+    if (close(fd) == -1) {
+        perror("server.c:: Close socket");
+        return (84);
+    }
+    if (write(1, "Server closed\n", 15) == -1) {
+        perror("server.c:: Write closed state");
+        return (84);
+    }
+    return (0);
+}
+
+static int loop(server_t server, client_t *clients, char *path)
+{
+    int last_client = 0;
+    int fdmax = 0;
+    int ret = 0;
+    fd_set readfds;
+
+    while (!ret) {
+        initfds(&readfds, server, clients, &fdmax);
+        if (select(fdmax+1 , &readfds , NULL , NULL , NULL) == -1)
+            perror("server.c:: Select");
+        if (FD_ISSET(server.fd, &readfds)) {
+            ret = add_client(clients, server.fd, path, &last_client);
+            if (!ret && (last_client != -1))
+                ret = execute(&server, clients, last_client);
+        } else
+            ret = checkfds(&server, clients, &readfds);
+    }
+    if (close_server(server.fd) == 84)
+        ret = 84;
+    // free_clients_list(clients);
+    return ((ret == 84) ? 84 : 0);
+}
+
 int server(int port, char *path)
 {
     server_t server;
-    client_t *client = NULL;
+    client_t clients[MAX_CLIENTS];
 
     server.port = port;
     server.fd = create_socket();
@@ -80,5 +80,6 @@ int server(int port, char *path)
         close_server(server.fd);
         return (84);
     }
-    return loop(server, client, path);
+    initclients(clients);
+    return loop(server, (client_t *)clients, path);
 }

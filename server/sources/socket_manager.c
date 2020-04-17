@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2019
 ** SERVER // SOURCES
 ** File description:
-** create_socket.c
+** socket_manager.c
 */
 
 #include <strings.h>
