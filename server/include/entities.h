@@ -11,8 +11,11 @@
     #define BUFFERSIZE  100
     #define PATHSIZE    256
 
+    #include <stdbool.h>
+
     typedef struct client_s {
         int fd;
+        bool connected;
         sockaddr_in_t socket;
         char path[PATHSIZE];
     } client_t;

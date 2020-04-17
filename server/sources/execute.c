@@ -31,37 +31,34 @@ static int read_input(int fd, char *buffer)
     readsize = read(fd, buffer, BUFFERSIZE);
     if (readsize == -1)
         perror("reader.c:: Read from server's fd");
-    if (readsize <= BUFFERSIZE)
+    if (buffer[readsize - 1] == '\n')
         buffer[readsize - 1] = '\0';
     return (readsize);
 }
 
-static int command_parser(server_t *server, client_t *clients)
+static int command_parser(server_t *server, client_t *client)
 {
     int index = 0;
 
-    (void)clients;
     while (index < COMMANDSNBR) {
         if (!strncmp(server->buffer, commands[index].cmd, 4))
-            printf("%s\n", commands[index].cmd); // CHANGE .cmd
+            return (commands[index].function(server, client)); 
         index += 1;
+    }
+    if (dprintf(client->fd, ERROR) < 0) {
+        perror("execute.c :: Send ERROR Replay-code");
+        return (84);
     }
     return (0);
 }
 
 int execute(server_t *server, client_t *clients, int index)
 {
-    int ret = 0;
     int readsize = 0;
 
     memset(server->buffer, 0, BUFFERSIZE);
     readsize = read_input(clients[index].fd, (char *)server->buffer);
     if (readsize == -1 || !strncmp(server->buffer, "QUIT", 4))
-        ret = close_client(clients, index);
-    else {
-        ret = command_parser(server, &clients[index]);
-    }
-    //read stdin to check server closed
-    // ret = 1 if QUIT;
-    return (ret);
+        return (close_client(clients, index));
+    return (command_parser(server, &clients[index]));
 }

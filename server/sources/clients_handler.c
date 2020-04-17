@@ -14,6 +14,7 @@ void initclients(client_t *clients)
 
     while (index < MAX_CLIENTS) {
         clients[index].fd = 0;
+        clients[index].connected = false;
         memset(clients[index].path, 0, PATHSIZE);
         index += 1;
     }
@@ -52,5 +53,6 @@ int close_client(client_t *clients, int index)
     }
     memset(clients[index].path, '\0', PATHSIZE);
     clients[index].fd = 0;
+    clients[index].connected = false;
     return (0);
 }
