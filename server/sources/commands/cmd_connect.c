@@ -20,7 +20,7 @@ int cmd_user(server_t *server, client_t *client)
         if (dprintf(client->fd, "%s\n", ERROR) < 0) {
             perror("cmd_connect.c :: Send ERROR Reply-code");
             return (84);
-        } 
+        }
     }
     return (0);
 }
@@ -39,6 +39,7 @@ int cmd_pass(server_t *server, client_t *client)
         if (dprintf(client->fd, "%s\n", ERROR) < 0) {
             perror("cmd_connect.c :: Send ERROR Reply-code");
             return (84);
-        } 
-    }    return (0);
+        }
+    }
+    return (0);
 }

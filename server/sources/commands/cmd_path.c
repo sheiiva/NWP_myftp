@@ -37,7 +37,7 @@ int cmd_pwd(server_t *server, client_t *client)
         if (dprintf(client->fd, "%s\n", ERROR) < 0) {
             perror("cmd_help.c :: Send ERROR Reply-code");
             return (84);
-        } 
+        }
     }
     return (0);
 }

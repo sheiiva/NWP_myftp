@@ -5,18 +5,19 @@
 ## Makefile
 ##
 
-NAME 		= 	../myftp
-SRC_LIB 	= 	libsrc/libserver.a
-
 ROOT_PATH			=	../
 SRC_PATH			=	sources/
 INCLUDE_PATH		=	include/
 LIBSRC_PATH         =   libsrc/
 
+NAME 		= 	$(ROOT_PATH)myftp
+SRC_LIB 	= 	$(LIBSRC_PATH)libserver.a
+
+
 INCLUDES		=	-I./$(INCLUDE_PATH)				\
 					-I./$(INCLUDE_PATH)defines		\
 
-override CFLAGS 	+=	-W -Wall -Werror -Wextra $(INCLUDES) -g3
+override CFLAGS 	+=	-W -Wall -Werror -Wextra $(INCLUDES)
 override LDFLAGS 	+=
 override LDLIBS 	+=
 
@@ -39,8 +40,8 @@ SRC		=	$(SRC_PATH)arguments_handler.c	\
 
 OBJ 	= 	$(SRC:.c=.o)
 
-CC		= 	gcc
-LD		=	$(CC)
+CC			= 	gcc
+LD			=	$(CC)
 PRINT		=	@echo -e
 RM          =   @rm -f
 

@@ -20,14 +20,14 @@ static int isnum(char *arg)
 int checkpath(char *path)
 {
     DIR *dir = opendir(path);
-    
+
     if (!dir) {
         perror(path);
         return (84);
     }
     if (closedir(dir) == -1) {
         perror("main.c :: close directory");
-        return (84);           
+        return (84);
     }
     return (0);
 }
@@ -55,6 +55,6 @@ int check_args(int ac, char **av, char *path)
     if (!isnum(av[1]))
         return (84);
     if ((getpath(av[2], path) == 84) || (checkpath(path) == 84))
-        return (84); 
+        return (84);
     return (0);
 }
