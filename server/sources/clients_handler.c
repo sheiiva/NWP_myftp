@@ -42,17 +42,13 @@ int add_client(client_t *clients, int fdserver, char *path, int *last_client)
     return (0);
 }
 
-int close_client(client_t *clients, int index)
+int close_client(client_t *clients, int index, bool interrupt)
 {
     printf("Close client from port %d\n", clients[index].socket.sin_port);
-    if (dprintf(clients[index].fd, "%s\n", LOGOUT) < 0) {
+    if (!interrupt && dprintf(clients[index].fd, "%s\n", LOGOUT) < 0)
         perror("clients_handler.c :: Send closing protocol to client");
-        return (84);
-    }
-    if (close(clients[index].fd) == -1) {
+    if (close(clients[index].fd) == -1)
         perror("clients_handler.c :: Close client");
-        return (84);
-    }
     memset(clients[index].path, '\0', PATHSIZE);
     clients[index].fd = 0;
     clients[index].connected = false;

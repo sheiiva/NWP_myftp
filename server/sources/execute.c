@@ -31,7 +31,7 @@ static int read_input(int fd, char *buffer)
     memset(buffer, 0, BUFFERSIZE);
     readsize = read(fd, buffer, BUFFERSIZE);
     if (readsize == -1)
-        perror("reader.c:: Read from server's fd");
+        perror("execute.c:: Read from server's fd");
     for (i = 0; i < readsize; i++) {
         if (buffer[i] == '\r' || buffer[i] == '\n')
             buffer[i] = '\0';
@@ -48,10 +48,10 @@ static int command_parser(server_t *server, client_t *client)
             return (commands[index].function(server, client));
         index += 1;
     }
-    // if (dprintf(client->fd, ERROR) < 0) {
-    //     perror("execute.c :: Send ERROR Replay-code");
-    //     return (84);
-    // }
+    if (dprintf(client->fd, "%s\n", ERROR) < 0) {
+        perror("execute.c :: Send ERROR Replay-code");
+        return (84);
+    }
     return (0);
 }
 
@@ -61,7 +61,10 @@ int execute(server_t *server, client_t *clients, int index)
 
     memset(server->buffer, 0, BUFFERSIZE);
     readsize = read_input(clients[index].fd, (char *)server->buffer);
-    if (readsize == -1 || !strncmp(server->buffer, "QUIT", 4))
-        return (close_client(clients, index));
-    return (command_parser(server, &clients[index]));
+    if (readsize == -1)
+        return (close_client(clients, index, true));
+    else if (!strncmp(server->buffer, "QUIT", 4))
+        return (close_client(clients, index, false));
+    else
+        return (command_parser(server, &clients[index]));
 }

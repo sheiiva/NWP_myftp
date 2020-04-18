@@ -28,7 +28,7 @@
     #define TRANSFERSTART       "125"
     #define OPENDATACONNECT     "150"
     #define COMMANDOK           "200"
-    #define HELP MESSAGE        "214"
+    #define HELP_MESSAGE        "214"
     #define READYFORNEWUSER     "220"
     #define LOGOUT              "221"
     #define CLOSEDATACONNECT    "226"

@@ -47,9 +47,9 @@ int cmd_help(server_t *server, client_t *client)
     if (printf("\n") < 0 || show_usage() == 84
         || printf("\n") < 0 || show_command() == 84)
         return (84);
-    if (dprintf(client->fd, "%s\n", HELPM) < 0) {
+    if (dprintf(client->fd, "%s\n", HELP_MESSAGE) < 0) {
         perror("cmd_help.c :: Send HELP Reply-code");
         return (84);
-    } 
+    }
     return (0);
 }

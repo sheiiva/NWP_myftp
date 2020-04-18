@@ -30,7 +30,7 @@ static int readfd(int fd, char *buffer, int *state)
         perror("reader.c:: Read from client's fd");
     if (readsize <= BUFFERSIZE) {
         buffer[readsize - 1] = '\0';
-        printf("received: %s\n", buffer);
+        printf("<< %s\n", buffer);
     }
     if (!strcmp(buffer, "221"))
         *state = CLOSE;
