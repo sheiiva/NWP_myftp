@@ -21,7 +21,7 @@ void initclients(client_t *clients, char *path)
     }
 }
 
-int add_client(client_t *clients, int fdserver, char *path, int *last_client)
+int add_client(client_t *clients, int fdserver, char *path)
 {
     int index = 0;
 
@@ -31,11 +31,9 @@ int add_client(client_t *clients, int fdserver, char *path, int *last_client)
         fprintf(stderr, "Cannot connect more clients.\n");
         if (dprintf(clients[index].fd, "%s\n", ERROR) < 0)
             return (84);
-        *last_client = -1;
     } else {
         if (accept_connection(fdserver, &clients[index]) == 84)
             return (84);
-        *last_client = index;
         memset(clients[index].path, 0, PATHSIZE);
         strcpy(clients[index].path, path);
     }

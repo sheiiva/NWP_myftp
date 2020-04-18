@@ -9,13 +9,6 @@
 
 static int init_server(server_t *server, int port)
 {
-    int opt = OPEN;
-
-    if (setsockopt((*server).fd, SOL_SOCKET, SO_REUSEADDR,
-                    (char *)&opt, sizeof(opt)) == -1 ) {
-        perror("socket_manager.c:: Set socket options");
-        return (84);
-    }
     (*server).socket.sin_family = AF_INET;
     (*server).socket.sin_port = htons(port);
     (*server).socket.sin_addr.s_addr = INADDR_ANY;
@@ -40,7 +33,6 @@ static int close_server(int fd)
 
 static int loop(server_t server, client_t *clients, char *path)
 {
-    int last_client = 0;
     int fdmax = 0;
     int ret = 0;
     fd_set readfds;
@@ -49,12 +41,9 @@ static int loop(server_t server, client_t *clients, char *path)
         initfds(&readfds, server, clients, &fdmax);
         if (select(fdmax+1 , &readfds , NULL , NULL , NULL) == -1)
             perror("server.c:: Select");
-        if (FD_ISSET(server.fd, &readfds)) {
-            ret = add_client(clients, server.fd, path, &last_client);
-            if (!ret && (last_client != -1))
-                ret = execute(&server, clients, last_client);
-        } else
-            ret = checkfds(&server, clients, &readfds);
+        if (FD_ISSET(server.fd, &readfds))
+            ret = add_client(clients, server.fd, path);
+        ret = checkfds(&server, clients, &readfds);
     }
     if (close_server(server.fd) == 84)
         ret = 84;

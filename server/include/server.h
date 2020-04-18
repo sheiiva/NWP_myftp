@@ -32,8 +32,7 @@
 
     int show_usage(void);
 
-    int add_client(client_t *clients, int fdserver,
-                    char *path, int *last_client);
+    int add_client(client_t *clients, int fdserver, char *path);
     int close_client(client_t *clients, int index, bool interrupt);
     void initclients(client_t *clients, char *path);
 
