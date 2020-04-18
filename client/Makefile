@@ -5,12 +5,13 @@
 ## Makefile
 ##
 
-NAME	=	../clients
-SRC_LIB 	= 	libsrc/libclient.a
-
+ROOT_PATH			=	../
 INCLUDE_PATH		=	include/
 SOURCES_PATH		=	sources/
 LIBSRC_PATH         =   libsrc/
+
+NAME		=	$(ROOT_PATH)clients
+SRC_LIB 	= 	$(LIBSRC_PATH)libclient.a
 
 override CFLAGS 	+=	-W -Wall -Werror -Wextra -I./$(INCLUDE_PATH)
 override LDFLAGS 	+=
@@ -23,8 +24,8 @@ SRC		=	$(SOURCES_PATH)client.c				\
 
 OBJ 	= 	$(SRC:.c=.o)
 
-CC		= 	gcc
-LD		=	$(CC)
+CC			= 	gcc
+LD			=	$(CC)
 PRINT		=	@echo -e
 RM          =   @rm -f
 

@@ -31,9 +31,9 @@ int init_server(char *addr, struct sockaddr_in *server, int port)
 
     if (!inet_aton(addr, &ipaddr))
         return (84);
-    (*server).sin_family = AF_INET;
-    (*server).sin_port = htons(port);
-    (*server).sin_addr = ipaddr;
-    bzero(&((*server).sin_zero), 8);
+    server->sin_family = AF_INET;
+    server->sin_port = htons(port);
+    server->sin_addr = ipaddr;
+    bzero(&(server->sin_zero), 8);
     return (0);
 }
