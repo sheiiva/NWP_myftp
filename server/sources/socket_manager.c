@@ -5,9 +5,7 @@
 ** socket_manager.c
 */
 
-#include <strings.h>
-#include "server.h"
-#include "protocol.h"
+#include "socket_manager.h"
 
 int create_socket(void)
 {

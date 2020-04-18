@@ -5,8 +5,7 @@
 ** cmd_mode.c
 */
 
-#include "protocol.h"
-#include "server.h"
+#include "execute.h"
 
 int cmd_pasv(server_t *server, client_t *client)
 {

@@ -5,8 +5,7 @@
 ** cmd_datatransfer.c
 */
 
-#include "protocol.h"
-#include "server.h"
+#include "execute.h"
 
 int cmd_retr(server_t *server, client_t *client)
 {

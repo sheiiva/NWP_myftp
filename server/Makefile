@@ -19,7 +19,8 @@ override LDLIBS 	+=
 
 COMMANDS_PATH		=	$(SRC_PATH)commands/
 
-SRC		=	$(SRC_PATH)clients_handler.c	\
+SRC		=	$(SRC_PATH)arguments_handler.c	\
+			$(SRC_PATH)clients_handler.c	\
 			$(SRC_PATH)execute.c			\
 			$(SRC_PATH)fd_handler.c			\
 			$(SRC_PATH)main.c				\

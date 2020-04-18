@@ -5,8 +5,7 @@
 ** cmd_connect.c
 */
 
-#include "protocol.h"
-#include "server.h"
+#include "execute.h"
 
 int cmd_user(server_t *server, client_t *client)
 {

@@ -2,11 +2,10 @@
 ** EPITECH PROJECT, 2019
 ** SERVER // SOURCES
 ** File description:
-** server.c
+** clients_handler.c
 */
 
-#include "protocol.h"
-#include "server.h"
+#include "clients_handler.h"
 
 void initclients(client_t *clients, char *path)
 {

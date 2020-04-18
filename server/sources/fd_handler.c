@@ -5,7 +5,7 @@
 ** fd_handler.c
 */
 
-#include "server.h"
+#include "fd_handler.h"
 
 void initfds(fd_set *readfds, server_t server, client_t *clients, int *fdmax)
 {

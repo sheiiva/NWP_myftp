@@ -8,22 +8,23 @@
 #ifndef ENTITIES_H_
     #define ENTITIES_H_
 
-    #define BUFFERSIZE  100
-    #define PATHSIZE    256
-
     #include <stdbool.h>
+    #include <sys/types.h>
+    #include <sys/socket.h>
+
+    #include "macro.h"
 
     typedef struct client_s {
         int fd;
         bool connected;
-        sockaddr_in_t socket;
+        struct sockaddr_in socket;
         char path[PATHSIZE];
     } client_t;
 
     typedef struct server_s {
         int fd;
         int port;
-        sockaddr_in_t socket;
+        struct sockaddr_in socket;
         char buffer[BUFFERSIZE];
     } server_t ;
 

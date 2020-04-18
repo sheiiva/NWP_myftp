@@ -9,11 +9,11 @@
 
 static int init_server(server_t *server, int port)
 {
-    (*server).socket.sin_family = AF_INET;
-    (*server).socket.sin_port = htons(port);
-    (*server).socket.sin_addr.s_addr = INADDR_ANY;
-    bzero(&((*server).socket.sin_zero), 8);
-    if (bind((*server).fd, (sockaddr_t *)&(*server).socket,
+    server->socket.sin_family = AF_INET;
+    server->socket.sin_port = htons(port);
+    server->socket.sin_addr.s_addr = INADDR_ANY;
+    bzero(&(server->socket.sin_zero), 8);
+    if (bind(server->fd, (sockaddr_t *)&server->socket,
             sizeof(sockaddr_t)) == -1) {
         perror("socket_manager.c:: Bind server");
         return (84);

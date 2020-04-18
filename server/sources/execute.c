@@ -5,8 +5,7 @@
 ** execute.c
 */
 
-#include "server.h"
-#include "protocol.h"
+#include "execute.h"
 
 static commands_t commands[COMMANDSNBR] = {
             {USER,    &cmd_user},
@@ -21,7 +20,7 @@ static commands_t commands[COMMANDSNBR] = {
             {RETR,    &cmd_retr},
             {STOR,    &cmd_stor},
             {LIST,    &cmd_list}
-        };
+    };
 
 static int read_input(int fd, char *buffer)
 {
@@ -59,7 +58,7 @@ int execute(server_t *server, client_t *clients, int index)
     readsize = read_input(clients[index].fd, (char *)server->buffer);
     if (readsize == -1)
         return (close_client(clients, index, true));
-    else if (!strncmp(server->buffer, "QUIT", 4))
+    else if (!strncmp(server->buffer, QUIT, 4))
         return (close_client(clients, index, false));
     else
         return (command_parser(server, &clients[index]));

@@ -5,8 +5,7 @@
 ** cmd_path.c
 */
 
-#include "protocol.h"
-#include "server.h"
+#include "execute.h"
 
 int cmd_cwd(server_t *server, client_t *client)
 {

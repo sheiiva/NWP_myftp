@@ -5,8 +5,7 @@
 ** cmd_noop.c
 */
 
-#include "protocol.h"
-#include "server.h"
+#include "execute.h"
 
 int cmd_noop(server_t *server, client_t *client)
 {

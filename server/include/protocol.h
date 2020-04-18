@@ -23,6 +23,7 @@
     #define RETR    "RETR"
     #define STOR    "STOR"
     #define LIST    "LIST"
+    #define QUIT    "QUIT"
 
     #define READYFORNMIN        "120"
     #define TRANSFERSTART       "125"
