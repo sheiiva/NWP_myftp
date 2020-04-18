@@ -26,8 +26,11 @@ int cmd_cdup(server_t *server, client_t *client)
 
 int cmd_pwd(server_t *server, client_t *client)
 {
-    printf("PWD\n");
-    (void)client;
     (void)server;
+    printf("%s\n", client->path);
+    if (dprintf(client->fd, "%s\n", PATHNAMECREATED) < 0) {
+        perror("cmd_help.c :: Send 257 Reply-code");
+        return (84);
+    }
     return (0);
 }

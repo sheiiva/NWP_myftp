@@ -16,7 +16,7 @@ void initclients(client_t *clients, char *path)
         clients[index].fd = 0;
         clients[index].connected = false;
         memset(clients[index].path, 0, PATHSIZE);
-        strcpy(clients[index].path, path);
+        strncpy(clients[index].path, path, PATHSIZE);
         index += 1;
     }
 }

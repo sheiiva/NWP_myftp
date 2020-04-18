@@ -8,6 +8,20 @@
 #include "server.h"
 #include "entities.h"
 
+static int getpath(char *argv, char *path)
+{
+    memset(path, 0, PATHSIZE);
+    if (getcwd(path, BUFFERSIZE) == NULL) {
+        perror("main.c :: getcwd");
+        return (84);
+    }
+    if (strcmp(argv, ".") && strcmp(argv, "./")) {
+        strcat(path, "/");
+        strcat(path, argv);
+    }
+    return (0);
+}
+
 int main(int ac, char **av)
 {
     char path[PATHSIZE];
@@ -17,16 +31,13 @@ int main(int ac, char **av)
     else if (ac != 3) {
         fprintf(stderr, "Wrong arguments number.\n");
         return (84);
-    } else {
-        if (!atoi(av[1])) {
-            fprintf(stderr, "Wrong argument.\n");
-            printf("Please enter a valid port for your server.\n");
-            return (84);
-        }
-        if (getcwd(path, PATHSIZE) == NULL) {
-            perror("main.c :: getcwd");
-            return (84);
-        }
-        return server(atoi(av[1]), strcat(path, av[2]));
     }
+    if (!atoi(av[1])) {
+        fprintf(stderr, "Wrong argument.\n");
+        printf("Please enter a valid port for your server.\n");
+        return (84);
+    }
+    if (getpath(av[2], path) == 84)
+        return (84);
+    return (server(atoi(av[1]), path));
 }
