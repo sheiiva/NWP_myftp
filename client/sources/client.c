@@ -20,6 +20,23 @@ static int close_client(int fd)
     return (0);
 }
 
+static int readfd(int fd, char *buffer, int *state)
+{
+    int readsize = 0;
+
+    memset(buffer, 0, BUFFERSIZE);
+    readsize = read(fd, buffer, BUFFERSIZE);
+    if (readsize == -1)
+        perror("reader.c:: Read from client's fd");
+    if (readsize <= BUFFERSIZE) {
+        buffer[readsize - 1] = '\0';
+        printf("received: %s\n", buffer);
+    }
+    if (!strcmp(buffer, "221"))
+        *state = CLOSE;
+    return (readsize);
+}
+
 static int loop(int fd)
 {
     int state = OPEN;
@@ -28,16 +45,16 @@ static int loop(int fd)
     char buffer[BUFFERSIZE];
 
     while (state == OPEN && !ret) {
-        if (write(1, ">> ", 4) == -1) {
-            perror("client.c:: Write prompt");
+        if (readfd(fd, buffer, & state) == -1)
+            return (84);
+        else if (state && write(1, ">> ", 4) == -1) {
             ret = 84;
-        } else if ((readsize = read_stdin((char *)buffer)) == -1) {
+        } else if (state && (readsize = read_stdin((char *)buffer)) == -1) {
             ret = 84;
-        } else if (write(fd, buffer, readsize) == -1) {
+        } else if (state && (write(fd, buffer, readsize) == -1)) {
             perror("client.c:: Write to Server");
             ret = 84;
-        } else if (strncmp(buffer, "QUIT", 4) == 0)
-            state = CLOSE;
+        }
     }
     if (close_client(fd) == 84)
         ret = 84;
