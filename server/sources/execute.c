@@ -48,10 +48,6 @@ static int command_parser(server_t *server, client_t *client)
             return (commands[index].function(server, client));
         index += 1;
     }
-    if (dprintf(client->fd, "%s\n", ERROR) < 0) {
-        perror("execute.c :: Send ERROR Replay-code");
-        return (84);
-    }
     return (0);
 }
 
