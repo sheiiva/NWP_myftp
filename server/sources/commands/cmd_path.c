@@ -9,9 +9,25 @@
 
 int cmd_cwd(server_t *server, client_t *client)
 {
-    printf("CWD\n");
-    (void)client;
-    (void)server;
+    if (client->connected == false) {
+        printf("Please loggin to access data.\n");
+        if (dprintf(client->fd, "%s\n", ERROR) < 0) {
+            perror("cmd_help.c :: Send ERROR Reply-code");
+            return (84);
+        }
+    } else if (checkpath(server->buffer + strlen("CWD ")) == 84) {
+        if (dprintf(client->fd, "%s\n", ERROR) < 0) {
+            perror("cmd_path.c :: Send ERROR Reply-code");
+            return (84);
+        }
+    } else {
+        memset(client->path, 0, PATHSIZE);
+        strcpy(client->path, server->buffer + strlen("CWD "));
+        if (dprintf(client->fd, "%s\n", ACTIONOK) < 0) {
+            perror("cmd_help.c :: Send 257 Reply-code");
+            return (84);
+        }
+    }
     return (0);
 }
 

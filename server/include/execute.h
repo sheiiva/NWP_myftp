@@ -12,6 +12,7 @@
     #include <string.h>
     #include <unistd.h>
 
+    #include "arguments_handler.h"
     #include "clients_handler.h"
 
     typedef struct commands_s {

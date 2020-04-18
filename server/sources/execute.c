@@ -43,7 +43,8 @@ static int command_parser(server_t *server, client_t *client)
     int index = 0;
 
     while (index < COMMANDSNBR) {
-        if (!strncmp(server->buffer, commands[index].cmd, 4))
+        if (!strncmp(server->buffer, commands[index].cmd,
+                strlen(commands[index].cmd)))
             return (commands[index].function(server, client));
         index += 1;
     }
@@ -58,7 +59,7 @@ int execute(server_t *server, client_t *clients, int index)
     readsize = read_input(clients[index].fd, (char *)server->buffer);
     if (readsize == -1)
         return (close_client(clients, index, true));
-    else if (!strncmp(server->buffer, QUIT, 4))
+    else if (!strncmp(server->buffer, QUIT, strlen(QUIT)))
         return (close_client(clients, index, false));
     else
         return (command_parser(server, &clients[index]));
