@@ -2,11 +2,11 @@
 ** EPITECH PROJECT, 2019
 ** SERVER // INCLUDE
 ** File description:
-** entities.h
+** structures.h
 */
 
-#ifndef ENTITIES_H_
-    #define ENTITIES_H_
+#ifndef STRUCTURES_H_
+    #define STRUCTURES_H_
 
     #include <stdbool.h>
     #include <sys/types.h>
@@ -29,4 +29,4 @@
     } server_t ;
 
 
-#endif /* !ENTITIES_H_ */
+#endif /* !STRUCTURES_H_ */

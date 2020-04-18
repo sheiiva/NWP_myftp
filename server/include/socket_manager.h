@@ -14,7 +14,7 @@
     #include <sys/types.h>
     #include <sys/socket.h>
 
-    #include "entities.h"
+    #include "structures.h"
     #include "protocol.h"
 
     int accept_connection(int fd_server, client_t *client);

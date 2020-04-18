@@ -18,7 +18,7 @@
     #include <unistd.h>
 
     #include "clients_handler.h"
-    #include "entities.h"
+    #include "structures.h"
     #include "fd_handler.h"
     #include "macro.h"
     #include "socket_manager.h"

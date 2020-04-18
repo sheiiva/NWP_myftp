@@ -13,7 +13,10 @@ SRC_PATH			=	sources/
 INCLUDE_PATH		=	include/
 LIBSRC_PATH         =   libsrc/
 
-override CFLAGS 	+=	-W -Wall -Werror -Wextra -I./$(INCLUDE_PATH) -g3
+INCLUDES		=	-I./$(INCLUDE_PATH)				\
+					-I./$(INCLUDE_PATH)defines		\
+
+override CFLAGS 	+=	-W -Wall -Werror -Wextra $(INCLUDES) -g3
 override LDFLAGS 	+=
 override LDLIBS 	+=
 
