@@ -22,6 +22,21 @@ static int getpath(char *argv, char *path)
     return (0);
 }
 
+static int checkpath(char *path)
+{
+    DIR *dir = opendir(path);
+    
+    if (!dir) {
+        perror(path);
+        return (84);
+    }
+    if (closedir(dir) == -1) {
+        perror("main.c :: close directory");
+        return (84);           
+    }
+    return (0);
+}
+
 int main(int ac, char **av)
 {
     char path[PATHSIZE];
@@ -37,7 +52,7 @@ int main(int ac, char **av)
         printf("Please enter a valid port for your server.\n");
         return (84);
     }
-    if (getpath(av[2], path) == 84)
+    if ((getpath(av[2], path) == 84) || (checkpath(path) == 84))
         return (84);
     return (server(atoi(av[1]), path));
 }

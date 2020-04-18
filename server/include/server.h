@@ -17,6 +17,8 @@
     typedef struct sockaddr sockaddr_t;
     typedef struct sockaddr_in sockaddr_in_t;
 
+    #include <dirent.h>
+
     #include <sys/time.h>
     #include <sys/types.h>
     #include <sys/socket.h>
