@@ -9,16 +9,19 @@
 
 int write_to(int fd, char *errorcode, char *comment)
 {
-    size_t size = strlen(errorcode) + strlen(comment) + 2;
+    size_t size = strlen(errorcode) + strlen(comment) + 3;
     char *output = malloc(sizeof(char) * size);
     
     if (!output)
         return (84);
     memset(output, 0, size);
     strcpy(output, errorcode);
-    strcat(output, " ");
-    strcat(output, comment);
-    if (write(fd, output, size) < 0) {
+    if (strlen(comment) != 0) {
+        strcat(output, " ");
+        strcat(output, comment);
+    }
+    strcat(output, "\n");
+    if (write(fd, output, strlen(output)) < 0) {
         perror(NULL);
         free(output);
         return (84);

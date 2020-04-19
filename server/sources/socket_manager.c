@@ -35,7 +35,7 @@ int accept_connection(int fd_server, client_t *client)
         return (84);
     }
     if (write_to(client->fd, READYFORNEWUSER,
-                "Connection Established") == 84)
+                "") == 84)
         return (84);
     if (printf("CLIENT:\n  .address: %s\n  .port: %d\n",
                 inet_ntoa(client->socket.sin_addr),

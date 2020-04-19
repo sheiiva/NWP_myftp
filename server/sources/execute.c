@@ -5,6 +5,7 @@
 ** execute.c
 */
 
+#include <errno.h>
 #include "execute.h"
 
 static commands_t commands[COMMANDSNBR] = {
@@ -29,11 +30,13 @@ static int read_input(int fd, char *buffer)
 
     memset(buffer, 0, BUFFERSIZE);
     readsize = read(fd, buffer, BUFFERSIZE);
-    if (readsize == -1)
+    if (readsize <= 0)
         perror("execute.c:: Read from server's fd");
-    for (i = 0; i < readsize; i++) {
-        if (buffer[i] == '\r' || buffer[i] == '\n')
-            buffer[i] = '\0';
+    else {
+        for (i = 0; i < readsize; i++) {
+            if (buffer[i] == '\r' || buffer[i] == '\n')
+                buffer[i] = '\0';
+        }
     }
     return (readsize);
 }
