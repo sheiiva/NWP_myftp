@@ -11,7 +11,7 @@ int write_to(int fd, char *errorcode, char *comment)
 {
     size_t size = strlen(errorcode) + strlen(comment) + 3;
     char *output = malloc(sizeof(char) * size);
-    
+
     if (!output)
         return (84);
     memset(output, 0, size);
