@@ -36,7 +36,7 @@
     #define PASSIVEMODE         "227 Entering Passive Mode (h1,h2,h3,h4,p1,p2)."
     #define LOGGEDIN            "230 User logged in, proceed."
     #define ACTIONOK            "250 Requested file action okay, completed."
-    #define PATHNAMECREATED     "257 PATHNAME created."
+    #define PATHNAMECREATED     "257 \"PATHNAME\" created."
     #define USERNAMEOK          "331 User name okay, need password."
     #define NEEDACCOUNT         "332 Need account for login."
     #define ERROR               "xxx Error (RFC compliant)"
