@@ -7,9 +7,9 @@
 
 #include "execute.h"
 
-static int show_command(void)
+static int show_command(client_t *client)
 {
-    if (printf(
+    if (dprintf(client->fd,
         "USER <SP> <username> <CRLF>   : Specify user for authentication\n"
         "PASS <SP> <password> <CRLF>   : Specify password to login\n\n"
         "CWD  <SP> <pathname> <CRLF>   : Change working directory\n"
@@ -30,9 +30,13 @@ static int show_command(void)
     return (0);
 }
 
-int show_usage(void)
+int show_usage(client_t *client)
 {
-    if (printf("USAGE: ./myftp port path\n"
+    int fd = 1;
+
+    if (client)
+        fd = client->fd;
+    if (dprintf(fd, "USAGE: ./myftp port path\n"
         "\tport\tis the port number on which the server socket listens\n"
         "\tpath\tis the path to the home directory for the Anonymous user\n"
         ) < 0)
@@ -43,11 +47,11 @@ int show_usage(void)
 int cmd_help(server_t *server, client_t *client)
 {
     (void)server;
-    if (printf("\n") < 0 || show_usage() == 84
-        || printf("\n") < 0 || show_command() == 84)
-        return (84);
     if (dprintf(client->fd, "%s\n", HELP_MESSAGE) < 0) {
         perror("cmd_help.c :: Send HELP Reply-code");
+        return (84);
+    if (show_usage(client) == 84 || dprintf(client->fd, "\n") < 0
+            || show_command(client) == 84)
         return (84);
     }
     return (0);

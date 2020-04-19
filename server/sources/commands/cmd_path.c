@@ -10,7 +10,6 @@
 int cmd_cwd(server_t *server, client_t *client)
 {
     if (client->connected == false) {
-        printf("Please loggin to access data.\n");
         if (dprintf(client->fd, "%s\n", ERROR) < 0) {
             perror("cmd_help.c :: Send ERROR Reply-code");
             return (84);
@@ -43,13 +42,11 @@ int cmd_pwd(server_t *server, client_t *client)
 {
     (void)server;
     if (client->connected) {
-        printf("%s\n", client->path);
-        if (dprintf(client->fd, "%s\n", PATHNAMECREATED) < 0) {
+        if (dprintf(client->fd, "%s\n%s\n", PATHNAMECREATED, client->path) < 0) {
             perror("cmd_help.c :: Send 257 Reply-code");
             return (84);
         }
     } else {
-        printf("Please loggin to access data.\n");
         if (dprintf(client->fd, "%s\n", ERROR) < 0) {
             perror("cmd_help.c :: Send ERROR Reply-code");
             return (84);

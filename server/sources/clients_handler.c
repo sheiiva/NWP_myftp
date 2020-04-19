@@ -27,7 +27,6 @@ int add_client(client_t *clients, int fdserver, char *path)
     while ((index < MAX_CLIENTS) && (clients[index].fd > 0))
         index += 1;
     if (index == MAX_CLIENTS) {
-        fprintf(stderr, "Cannot connect more clients.\n");
         if (dprintf(clients[index].fd, "%s\n", ERROR) < 0)
             return (84);
     } else {

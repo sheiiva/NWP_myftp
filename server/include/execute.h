@@ -21,7 +21,7 @@
     } commands_t;
 
     int execute(server_t *server, client_t *clients, int index);
-    int show_usage(void);
+    int show_usage(client_t *client);
 
     int cmd_user(server_t *server, client_t *client);
     int cmd_pass(server_t *server, client_t *client);
