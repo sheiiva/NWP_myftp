@@ -11,12 +11,13 @@ int cmd_user(server_t *server, client_t *client)
 {
     (void)server;
     if (!strcmp(server->buffer + strlen("USER "), "Anonymous")) {
-        if (dprintf(client->fd, "%s\n", USERNAMEOK) < 0) {
+        if (dprintf(client->fd,
+                    "%s User name okay, need password.\n", USERNAMEOK) < 0) {
             perror("cmd_connect.c :: Send 331 Reply-code");
             return (84);
         }
     } else {
-        if (dprintf(client->fd, "%s\n", ERROR) < 0) {
+        if (dprintf(client->fd, "%s Wrong username\n", ERROR) < 0) {
             perror("cmd_connect.c :: Send ERROR Reply-code");
             return (84);
         }
@@ -28,13 +29,14 @@ int cmd_pass(server_t *server, client_t *client)
 {
     (void)server;
     if (!strcmp(server->buffer, "PASS ")) {
-        if (dprintf(client->fd, "%s\n", LOGGEDIN) < 0) {
+        if (dprintf(client->fd,
+                    "%s User logged in, proceed.\n", LOGGEDIN) < 0) {
             perror("cmd_connect.c :: Send 331 Reply-code");
             return (84);
         } else
         client->connected = true;
     } else {
-        if (dprintf(client->fd, "%s\n", ERROR) < 0) {
+        if (dprintf(client->fd, "%s Wrong password.\n", ERROR) < 0) {
             perror("cmd_connect.c :: Send ERROR Reply-code");
             return (84);
         }

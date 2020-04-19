@@ -54,7 +54,7 @@ static int command_parser(server_t *server, client_t *client)
         }
         index += 1;
     }
-    if (dprintf(client->fd, "%s\n", ERROR) < 0) {
+    if (dprintf(client->fd, "%s Wrong command.\n", ERROR) < 0) {
         perror("cmd_help.c :: Send ERROR Reply-code");
         return (84);
     }
