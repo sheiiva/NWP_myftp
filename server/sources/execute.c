@@ -40,13 +40,23 @@ static int read_input(int fd, char *buffer)
 
 static int command_parser(server_t *server, client_t *client)
 {
+    int ret = 0;
     int index = 0;
 
+    if (server->buffer[0] == 0)
+        return (0);
     while (index < COMMANDSNBR) {
         if (!strncmp(server->buffer, commands[index].cmd,
-                strlen(commands[index].cmd)))
-            return (commands[index].function(server, client));
+                strlen(commands[index].cmd))) {
+            ret = commands[index].function(server, client);
+            memset(server->buffer, 0, BUFFERSIZE);
+            return (ret);
+        }
         index += 1;
+    }
+    if (dprintf(client->fd, "%s\nWrong command.\n", ERROR) < 0) {
+        perror("cmd_help.c :: Send ERROR Reply-code");
+        return (84);
     }
     return (0);
 }
