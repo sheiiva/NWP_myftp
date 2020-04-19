@@ -13,6 +13,7 @@
     #include <unistd.h>
 
     #include "socket_manager.h"
+    #include "fd_handler.h"
 
     int add_client(client_t *clients, int fdserver, char *path);
     int close_client(client_t *clients, int index, bool interrupt);

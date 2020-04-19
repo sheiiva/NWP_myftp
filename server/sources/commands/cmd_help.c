@@ -10,10 +10,7 @@
 int cmd_help(server_t *server, client_t *client)
 {
     (void)server;
-    if (dprintf(client->fd, "%s %s\n%s\n",
-                HELP_MESSAGE, USAGE, COMMAND_H) < 0) {
-        perror("cmd_help.c :: Send HELP Reply-code");
+    if (write_to(client->fd, HELP_MESSAGE, COMMAND_H) == 84)
         return (84);
-    }
     return (0);
 }

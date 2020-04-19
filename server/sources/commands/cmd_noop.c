@@ -10,9 +10,7 @@
 int cmd_noop(server_t *server, client_t *client)
 {
     (void)server;
-    if (dprintf(client->fd, "%s Command okay.\n", COMMANDOK) < 0) {
-        perror("cmd_noop.c :: Send 200 Replay-code");
+    if (write_to(client->fd, COMMANDOK, "Command okay.") == 84)
         return (84);
-    }
     return (0);
 }

@@ -16,6 +16,7 @@
 
     #include "structures.h"
     #include "protocol.h"
+    #include "fd_handler.h"
 
     int accept_connection(int fd_server, client_t *client);
     int create_socket(void);

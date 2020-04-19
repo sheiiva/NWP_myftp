@@ -10,8 +10,9 @@
 static int isnum(char *arg)
 {
     if (!atoi(arg)) {
-        fprintf(stderr, "Wrong argument.\n");
-        printf("Please enter a valid port for your server.\n");
+        if ((write(2, "Wrong argument.\n", 17) < 0)
+        || (write(2, "Please enter a valid port for your server.\n", 44) < 0))
+            perror(NULL);
         return (0);
     }
     return (1);
@@ -49,7 +50,8 @@ static int getpath(char *argv, char *path)
 int check_args(int ac, char **av, char *path)
 {
     if (ac != 3) {
-        fprintf(stderr, "Wrong arguments number.\n");
+        if (write(2, "Wrong arguments number.\n", 25) < 0)
+            perror(NULL);
         return (84);
     }
     if (!isnum(av[1]))

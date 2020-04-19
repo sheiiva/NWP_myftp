@@ -54,10 +54,8 @@ static int command_parser(server_t *server, client_t *client)
         }
         index += 1;
     }
-    if (dprintf(client->fd, "%s Wrong command.\n", ERROR) < 0) {
-        perror("cmd_help.c :: Send ERROR Reply-code");
+    if (write_to(client->fd, ERROR, "Wrong command.") == 84)
         return (84);
-    }
     return (0);
 }
 

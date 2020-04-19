@@ -50,21 +50,17 @@ int cmd_list(server_t *server, client_t *client)
     char buffer[PATHSIZE];
 
     if (client->connected == false) {
-        if (dprintf(client->fd, "%s Not Logged in.\n", ERROR) < 0) {
-            perror("cmd_help.c :: Send ERROR Reply-code");
+        if (write_to(client->fd, ERROR, "Not Logged in.") == 84)
             return (84);
-        }
         return (0);
     }
     getPath(server, client, buffer);
     if (lsdir(buffer) == 84) {
-        if (dprintf(client->fd, "%s Wrong path.\n", ERROR) < 0) {
-            perror("cmd_help.c :: Send ERROR Reply-code");
+        if (write_to(client->fd, ERROR, "Wrong path.") == 84)
             return (84);
-        }
-    } else if (dprintf(client->fd, "%s %s\n", CLOSEDATACONNECT, buffer) < 0) {
-        perror("cmd_datatransfer.c :: Send 26 Reply-code");
-        return (84);
+    } else {
+        if (write_to(client->fd, CLOSEDATACONNECT, buffer) == 84)
+            return (84);
     }
     return (0);
 }

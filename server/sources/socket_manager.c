@@ -34,8 +34,8 @@ int accept_connection(int fd_server, client_t *client)
         perror("socket_manager.c:: Accept connection");
         return (84);
     }
-    if (dprintf(client->fd,
-        "%s Connection Established\n", READYFORNEWUSER) < 0)
+    if (write_to(client->fd, READYFORNEWUSER,
+                "Connection Established") == 84)
         return (84);
     if (printf("CLIENT:\n  .address: %s\n  .port: %d\n",
                 inet_ntoa(client->socket.sin_addr),

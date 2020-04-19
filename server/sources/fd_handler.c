@@ -7,6 +7,26 @@
 
 #include "fd_handler.h"
 
+int write_to(int fd, char *errorcode, char *comment)
+{
+    size_t size = strlen(errorcode) + strlen(comment) + 2;
+    char *output = malloc(sizeof(char) * size);
+    
+    if (!output)
+        return (84);
+    memset(output, 0, size);
+    strcpy(output, errorcode);
+    strcat(output, " ");
+    strcat(output, comment);
+    if (write(fd, output, size) < 0) {
+        perror(NULL);
+        free(output);
+        return (84);
+    }
+    free(output);
+    return (0);
+}
+
 void initfds(fd_set *readfds, server_t server, client_t *clients, int *fdmax)
 {
     int index = 0;
