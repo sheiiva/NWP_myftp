@@ -7,19 +7,6 @@
 
 #include "client.h"
 
-static int close_client(int fd)
-{
-    if (close(fd) == -1) {
-        perror("client.c:: Close socket");
-        return (84);
-    }
-    if (write(1, "Client closed\n", 15) == -1) {
-        perror("client.c:: Write closed state");
-        return (84);
-    }
-    return (0);
-}
-
 static int readfd(int fd, char *buffer, int *state)
 {
     int readsize = 0;
@@ -32,7 +19,7 @@ static int readfd(int fd, char *buffer, int *state)
         buffer[readsize - 1] = '\0';
         printf("<< %s\n", buffer);
     }
-    if (!strcmp(buffer, "221"))
+    if (!strncmp(buffer, "221", 3))
         *state = CLOSE;
     return (readsize);
 }
@@ -56,8 +43,6 @@ static int loop(int fd)
             ret = 84;
         }
     }
-    if (close_client(fd) == 84)
-        ret = 84;
     return (ret);
 }
 

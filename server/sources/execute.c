@@ -67,7 +67,7 @@ int execute(server_t *server, client_t *clients, int index)
 
     memset(server->buffer, 0, BUFFERSIZE);
     readsize = read_input(clients[index].fd, (char *)server->buffer);
-    if (readsize == -1)
+    if (readsize <= 0)
         return (close_client(clients, index, true));
     else if (!strncmp(server->buffer, QUIT, strlen(QUIT)))
         return (close_client(clients, index, false));

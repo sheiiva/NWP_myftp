@@ -42,7 +42,8 @@ int add_client(client_t *clients, int fdserver, char *path)
 int close_client(client_t *clients, int index, bool interrupt)
 {
     printf("Close client from port %d\n", clients[index].socket.sin_port);
-    if (!interrupt&& dprintf(clients[index].fd, "%s\n", LOGOUT) < 0)
+    if (interrupt == false
+        && dprintf(clients[index].fd, "%s Connection closed\n", LOGOUT) < 0)
         perror("clients_handler.c :: Send closing protocol to client");
     if (close(clients[index].fd) == -1)
         perror("clients_handler.c :: Close client");
