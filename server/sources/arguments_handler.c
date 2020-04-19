@@ -7,7 +7,7 @@
 
 #include "arguments_handler.h"
 
-static int isnum(char *arg)
+int isnum(char *arg)
 {
     if (!atoi(arg)) {
         if ((write(2, "Wrong argument.\n", 17) < 0)
@@ -33,7 +33,7 @@ int checkpath(char *path)
     return (0);
 }
 
-static int getpath(char *argv, char *path)
+int getpath(char *argv, char *path)
 {
     memset(path, 0, PATHSIZE);
     if (getcwd(path, BUFFERSIZE) == NULL) {

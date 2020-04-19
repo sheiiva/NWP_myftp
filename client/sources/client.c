@@ -7,7 +7,7 @@
 
 #include "client.h"
 
-static int readfd(int fd, char *buffer, int *state)
+int readfd(int fd, char *buffer, int *state)
 {
     int readsize = 0;
 
@@ -24,7 +24,7 @@ static int readfd(int fd, char *buffer, int *state)
     return (readsize);
 }
 
-static int loop(int fd)
+int loop(int fd)
 {
     int state = OPEN;
     int ret = 0;

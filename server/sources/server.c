@@ -7,7 +7,7 @@
 
 #include "server.h"
 
-static int init_server(server_t *server, int port)
+int init_server(server_t *server, int port)
 {
     server->socket.sin_family = AF_INET;
     server->socket.sin_port = htons(port);
@@ -21,7 +21,7 @@ static int init_server(server_t *server, int port)
     return (0);
 }
 
-static int close_server(int fd)
+int close_server(int fd)
 {
     if (close(fd) == -1) {
         perror("server.c:: Close socket");
@@ -32,7 +32,7 @@ static int close_server(int fd)
     return (0);
 }
 
-static int loop(server_t server, client_t *clients, char *path)
+int loop(server_t server, client_t *clients, char *path)
 {
     int fdmax = 0;
     int ret = 0;

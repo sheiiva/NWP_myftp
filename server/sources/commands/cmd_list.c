@@ -24,7 +24,7 @@ static void getPath(server_t *server, client_t *client, char *path)
     }
 }
 
-static int lsdir(char *path)
+int lsdir(char *path)
 {
     DIR *dir = NULL;
     struct dirent *openeddir;

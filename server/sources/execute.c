@@ -23,7 +23,7 @@ static commands_t commands[COMMANDSNBR] = {
             {LIST,    &cmd_list}
     };
 
-static int read_input(int fd, char *buffer)
+int read_input(int fd, char *buffer)
 {
     int i = 0;
     int readsize = 0;
@@ -41,7 +41,7 @@ static int read_input(int fd, char *buffer)
     return (readsize);
 }
 
-static int command_parser(server_t *server, client_t *client)
+int command_parser(server_t *server, client_t *client)
 {
     int ret = 0;
     int index = 0;
