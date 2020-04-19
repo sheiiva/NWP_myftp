@@ -33,6 +33,7 @@ SRC		=	$(SRC_PATH)arguments_handler.c	\
 			$(COMMANDS_PATH)cmd_connect.c		\
 			$(COMMANDS_PATH)cmd_datatransfer.c	\
 			$(COMMANDS_PATH)cmd_help.c			\
+			$(COMMANDS_PATH)cmd_list.c			\
 			$(COMMANDS_PATH)cmd_mode.c			\
 			$(COMMANDS_PATH)cmd_noop.c			\
 			$(COMMANDS_PATH)cmd_path.c			\
