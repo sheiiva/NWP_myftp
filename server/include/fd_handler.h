@@ -18,6 +18,6 @@
     int checkfds(server_t *server, client_t *clients, fd_set *readfds);
     void initfds(fd_set *readfds, server_t server,
                     client_t *clients, int *fdmax);
-    int write_to(int fd, char *errorcode, char *comment);
+    int write_to(int fd, char *replycode);
 
 #endif /* !FD_HANDLER_H_ */

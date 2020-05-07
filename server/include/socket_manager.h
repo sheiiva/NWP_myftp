@@ -20,6 +20,6 @@
 
     int accept_connection(int fd_server, client_t *client);
     int create_socket(void);
-    int listen_socket(int fd, int backlog);
+    int listen_socket(int fd);
 
 #endif /* !SOCKET_MANAGER_H_ */

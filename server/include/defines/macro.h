@@ -12,8 +12,7 @@
     #define OPEN        1
     #define BACKLOG     3
 
-    #define COMMANDSNBR 12
-    #define MAX_CLIENTS 1024
+    #define COMMANDSNBR 13
 
     #define BUFFERSIZE  100
     #define PATHSIZE    256

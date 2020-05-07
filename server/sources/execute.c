@@ -33,12 +33,13 @@ int read_input(int fd, char *buffer)
     if (readsize <= 0)
         perror("execute.c:: Read from server's fd");
     else if (readsize == 1) {
-        if (write_to(fd, ERROR, "Wrong command.") == 84)
+        if (write_to(fd, WRONGCOMMAND) == 84)
             return (84);
     } else {
         for (i = 0; i < readsize; i++) {
-            if (buffer[i] == '\r' || buffer[i] == '\n')
+            if ((buffer[i] == '\r') || (buffer[i] == '\n'))
                 buffer[i] = '\0';
+            // CAREFULL EXTRA SPACES
         }
     }
     return (readsize);
@@ -60,7 +61,7 @@ int command_parser(server_t *server, client_t *client)
         }
         index += 1;
     }
-    if (write_to(client->fd, ERROR, "Wrong command.") == 84)
+    if (write_to(client->fd, WRONGCOMMAND) == 84)
         return (84);
     return (0);
 }
@@ -71,9 +72,9 @@ int execute(server_t *server, client_t *clients, int index)
 
     memset(server->buffer, 0, BUFFERSIZE);
     readsize = read_input(clients[index].fd, (char *)server->buffer);
-    if (readsize <= 0) {
+    if (readsize <= 0)
         return (close_client(clients, index, true));
-    } else if (!strncmp(server->buffer, QUIT, strlen(QUIT)))
+    else if (!strncmp(server->buffer, QUIT, strlen(QUIT)))
         return (close_client(clients, index, false));
     else
         return (command_parser(server, &clients[index]));

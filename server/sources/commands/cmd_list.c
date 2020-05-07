@@ -24,7 +24,7 @@ static void getPath(server_t *server, client_t *client, char *path)
     }
 }
 
-int lsdir(char *path)
+int lsdir(client_t *client, char *path)
 {
     DIR *dir = NULL;
     struct dirent *openeddir;
@@ -33,6 +33,8 @@ int lsdir(char *path)
         perror("cmd_datatransfer.c :: Open working directory");
         return (84);
     }
+    if (write_to(client->fd, OPENDATACONNECT) == 84)
+        return (84);
     memset(path, 0, PATHSIZE);
     while ((openeddir = readdir(dir))) {
         if (openeddir->d_name[0] != '.') {
@@ -42,25 +44,19 @@ int lsdir(char *path)
     }
     if (closedir(dir) == -1)
         perror("cmd_list.c :: Close directory");
-    return (0);
+    return (write_to(client->fd, path));
 }
 
 int cmd_list(server_t *server, client_t *client)
 {
-    char buffer[PATHSIZE];
+    char buffer[strlen(CLOSEDATACONNECT) + PATHSIZE + 1];
 
-    if (client->connected == false) {
-        if (write_to(client->fd, ERROR, "Not Logged in.") == 84)
-            return (84);
-        return (0);
-    }
+    if (client->connected == false)
+        return (write_to(client->fd, NOTLOGGEDIN));
     getPath(server, client, buffer);
-    if (lsdir(buffer) == 84) {
-        if (write_to(client->fd, ERROR, "Wrong path.") == 84)
-            return (84);
-    } else {
-        if (write_to(client->fd, CLOSEDATACONNECT, buffer) == 84)
-            return (84);
-    }
+    if (lsdir(client, buffer) == 84)
+        return (write_to(client->fd, WRONGARGUMENTS));
+    if (write_to(client->fd, CLOSEDATACONNECT) == 84)
+        return (84);
     return (0);
 }

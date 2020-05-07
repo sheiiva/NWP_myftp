@@ -11,11 +11,12 @@ void initclients(client_t *clients, char *path)
 {
     int index = 0;
 
-    while (index < MAX_CLIENTS) {
+    while (index < FD_SETSIZE) {
         clients[index].fd = 0;
         clients[index].connected = false;
         memset(clients[index].path, 0, PATHSIZE);
         strncpy(clients[index].path, path, PATHSIZE);
+        memset(clients[index].name, 0, BUFFERSIZE);
         index += 1;
     }
 }
@@ -24,11 +25,10 @@ int add_client(client_t *clients, int fdserver, char *path)
 {
     int index = 0;
 
-    while ((index < MAX_CLIENTS) && (clients[index].fd > 0))
+    while ((index < FD_SETSIZE) && (clients[index].fd > 0))
         index += 1;
-    if (index == MAX_CLIENTS) {
-        if (write_to(clients[index].fd, ERROR,
-                    "Cannot connect more client") < 0)
+    if (index == FD_SETSIZE) {
+        if (write_to(clients[index].fd, INSUFSTORAGE) == -1)
             return (84);
     } else {
         if (accept_connection(fdserver, &clients[index]) == 84)
@@ -43,12 +43,13 @@ int close_client(client_t *clients, int index, bool interrupt)
 {
     printf("Close client from port %d\n", clients[index].socket.sin_port);
     if (interrupt == false) {
-        if (write_to(clients[index].fd, LOGOUT, "Connection closed") < 0)
+        if (write_to(clients[index].fd, LOGOUT) < 0)
             return (84);
     }
     if (close(clients[index].fd) == -1)
         perror("clients_handler.c :: Close client");
-    memset(clients[index].path, '\0', PATHSIZE);
+    memset(clients[index].path, 0, PATHSIZE);
+    memset(clients[index].name, 0, BUFFERSIZE);
     clients[index].fd = 0;
     clients[index].connected = false;
     return (0);

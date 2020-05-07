@@ -16,9 +16,9 @@ int create_socket(void)
     return (sck);
 }
 
-int listen_socket(int fd, int backlog)
+int listen_socket(int fd)
 {
-    if (listen(fd, backlog) == -1) {
+    if (listen(fd, BACKLOG) == -1) {
         perror("socket_manager.c:: Listen");
         return (84);
     }
@@ -27,15 +27,14 @@ int listen_socket(int fd, int backlog)
 
 int accept_connection(int fd_server, client_t *client)
 {
-    socklen_t addrlen = (socklen_t)sizeof(sockaddr_in_t);
+    socklen_t addrlen = (socklen_t)sizeof(client->socket);
 
     client->fd = accept(fd_server, (sockaddr_t *)&client->socket, &addrlen);
     if (client->fd == -1) {
         perror("socket_manager.c:: Accept connection");
         return (84);
     }
-    if (write_to(client->fd, READYFORNEWUSER,
-                "") == 84)
+    if (write_to(client->fd, READYFORNEWUSER) == 84)
         return (84);
     if (printf("CLIENT:\n  .address: %s\n  .port: %d\n",
                 inet_ntoa(client->socket.sin_addr),

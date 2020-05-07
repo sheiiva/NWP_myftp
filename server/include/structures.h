@@ -19,6 +19,7 @@
         bool connected;
         struct sockaddr_in socket;
         char path[PATHSIZE];
+        char name[BUFFERSIZE];
     } client_t;
 
     typedef struct server_s {

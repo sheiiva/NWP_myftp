@@ -14,7 +14,7 @@ int init_server(server_t *server, int port)
     server->socket.sin_addr.s_addr = INADDR_ANY;
     bzero(&(server->socket.sin_zero), 8);
     if (bind(server->fd, (sockaddr_t *)&server->socket,
-            sizeof(&server->socket)) == -1) {
+            sizeof(server->socket)) == -1) {
         perror("socket_manager.c:: Bind server");
         return (84);
     }
@@ -40,11 +40,14 @@ int loop(server_t server, client_t *clients, char *path)
 
     while (!ret) {
         initfds(&readfds, server, clients, &fdmax);
-        if (select(fdmax+1 , &readfds , NULL , NULL , NULL) == -1)
+        if (select((fdmax + 1), &readfds , NULL , NULL , NULL) == -1) {
             perror("server.c:: Select");
-        if (FD_ISSET(server.fd, &readfds))
-            ret = add_client(clients, server.fd, path);
-        ret = checkfds(&server, clients, &readfds);
+            ret = 84;
+        } else {
+            if (FD_ISSET(server.fd, &readfds))
+                ret = add_client(clients, server.fd, path);
+            ret = checkfds(&server, clients, &readfds);
+        }
     }
     if (close_server(server.fd) == 84)
         ret = 84;
@@ -54,7 +57,7 @@ int loop(server_t server, client_t *clients, char *path)
 int server(int port, char *path)
 {
     server_t server;
-    client_t clients[MAX_CLIENTS];
+    client_t clients[FD_SETSIZE];
 
     server.port = port;
     server.fd = create_socket();
@@ -62,7 +65,7 @@ int server(int port, char *path)
         return (84);
     if ((write(1, "Welcome on server!\n", 20) == -1)
     || (init_server(&server, port) == 84)
-    || (listen_socket(server.fd, BACKLOG) == 84)) {
+    || (listen_socket(server.fd) == 84)) {
         close_server(server.fd);
         return (84);
     }

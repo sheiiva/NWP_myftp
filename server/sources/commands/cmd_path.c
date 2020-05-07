@@ -9,17 +9,15 @@
 
 int cmd_cwd(server_t *server, client_t *client)
 {
-    if (client->connected == false) {
-        if (write_to(client->fd, ERROR, "Not logged in.") == 84)
-            return (84);
-    } else if (checkpath(server->buffer + strlen("CWD ")) == 84) {
-        if (write_to(client->fd, ERROR, "No such directory.") == 84)
+    if (client->connected == false)
+        return (write_to(client->fd, NOTLOGGEDIN));
+    else if (checkpath((server->buffer + strlen("CWD "))) == 84) {
+        if (write_to(client->fd, WRONGARGUMENTS) == 84)
             return (84);
     } else {
         memset(client->path, 0, PATHSIZE);
-        strcpy(client->path, server->buffer + strlen("CWD "));
-        if (write_to(client->fd, ACTIONOK,
-                    "Requested file action completed.") == 84)
+        strcpy(client->path, (server->buffer + strlen("CWD ")));
+        if (write_to(client->fd, ACTIONOK) == 84)
             return (84);
     }
     return (0);
@@ -28,19 +26,27 @@ int cmd_cwd(server_t *server, client_t *client)
 int cmd_cdup(server_t *server, client_t *client)
 {
     printf("CDUP\n");
-    (void)client;
     (void)server;
+    if (client->connected == false)
+        return (write_to(client->fd, NOTLOGGEDIN));
     return (0);
 }
 
 int cmd_pwd(server_t *server, client_t *client)
 {
+    size_t pathlen = strlen(PATHNAMECREATED) + strlen(client->path) + 1;
+    char *output = NULL;
+
     (void)server;
-    if (client->connected) {
-        if (write_to(client->fd, PATHNAMECREATED, client->path) == 84)
-            return (84);
-    } else {
-        if (write_to(client->fd, ERROR, "Not logged in.") == 84)
+    if (client->connected == false)
+        return (write_to(client->fd, NOTLOGGEDIN));
+    else {
+        output = malloc(sizeof(char) * pathlen);
+        memset(output, 0, pathlen);        
+        strcpy(output, PATHNAMECREATED);
+        strcat(output, "\n");
+        strcat(output, client->path);
+        if (write_to(client->fd, output) == 84)
             return (84);
     }
     return (0);
