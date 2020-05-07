@@ -23,23 +23,26 @@ override LDLIBS 	+=
 
 COMMANDS_PATH		=	$(SRC_PATH)commands/
 
-SRC		=	$(SRC_PATH)arguments_handler.c	\
-			$(SRC_PATH)clients_handler.c	\
-			$(SRC_PATH)execute.c			\
-			$(SRC_PATH)fd_handler.c			\
-			$(SRC_PATH)main.c				\
-			$(SRC_PATH)server.c				\
-			$(SRC_PATH)socket_manager.c		\
-			$(COMMANDS_PATH)cmd_connect.c		\
-			$(COMMANDS_PATH)cmd_datatransfer.c	\
-			$(COMMANDS_PATH)cmd_help.c			\
-			$(COMMANDS_PATH)cmd_list.c			\
-			$(COMMANDS_PATH)cmd_mode.c			\
-			$(COMMANDS_PATH)cmd_noop.c			\
-			$(COMMANDS_PATH)cmd_path.c			\
+TEST_SRC		=	$(SRC_PATH)arguments_handler.c	\
+					$(SRC_PATH)clients_handler.c	\
+					$(SRC_PATH)execute.c			\
+					$(SRC_PATH)fd_handler.c			\
+					$(SRC_PATH)server.c				\
+					$(SRC_PATH)socket_manager.c		\
+					$(COMMANDS_PATH)cmd_connect.c		\
+					$(COMMANDS_PATH)cmd_datatransfer.c	\
+					$(COMMANDS_PATH)cmd_help.c			\
+					$(COMMANDS_PATH)cmd_list.c			\
+					$(COMMANDS_PATH)cmd_mode.c			\
+					$(COMMANDS_PATH)cmd_noop.c			\
+					$(COMMANDS_PATH)cmd_path.c			\
 
+TESTOBJ		= 	$(TEST_SRC:.c=.o)
 
-OBJ 	= 	$(SRC:.c=.o)
+SRC				=	$(SRC_PATH)main.c				\
+					$(TEST_SRC)
+
+OBJ 		= 	$(SRC:.c=.o)
 
 CC			= 	gcc
 LD			=	$(CC)
@@ -51,7 +54,7 @@ $(NAME): $(OBJ)
 	$(LD) $(CFLAGS) $^ $(LDFLAGS) $(LDLIBS) -o $@
 	$(PRINT) "\n------->\tCONGRATS !\n"
 
-$(SRC_LIB): $(OBJ)
+$(SRC_LIB): $(TESTOBJ)
 	$(PRINT) "\n------->\tCOMPILED SERVER SRC DEPENDENCIES.\n\nLET'S PACK SERVER LIB:\n"
 	@mkdir $(LIBSRC_PATH)
 	$(AR) rc $@ $^

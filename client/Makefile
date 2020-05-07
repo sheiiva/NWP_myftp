@@ -17,12 +17,16 @@ override CFLAGS 	+=	-W -Wall -Werror -Wextra -I./$(INCLUDE_PATH)
 override LDFLAGS 	+=
 override LDLIBS 	+=
 
-SRC		=	$(SOURCES_PATH)client.c				\
-			$(SOURCES_PATH)main.c				\
-			$(SOURCES_PATH)reader.c				\
-			$(SOURCES_PATH)socket_manager.c		\
+TEST_SRC		=	$(SOURCES_PATH)client.c				\
+					$(SOURCES_PATH)reader.c				\
+					$(SOURCES_PATH)socket_manager.c		\
 
-OBJ 	= 	$(SRC:.c=.o)
+TEST_OBJ 	= 	$(TEST_SRC:.c=.o)
+
+SRC				=	$(SOURCES_PATH)main.c				\
+					$(TEST_SRC)
+
+OBJ 		= 	$(SRC:.c=.o)
 
 CC			= 	gcc
 LD			=	$(CC)
@@ -34,7 +38,7 @@ $(NAME): $(OBJ)
 	$(LD) $(CFLAGS) $^ $(LDFLAGS) $(LDLIBS) -o $@
 	$(PRINT) "\n------->\tCONGRATS !\n"
 
-$(SRC_LIB): $(OBJ)
+$(SRC_LIB): $(TEST_OBJ)
 	$(PRINT) "\n------->\tCOMPILED CLIENT SRC DEPENDENCIES.\n\nLET'S PACK CLIENT LIB:\n"
 	@mkdir $(LIBSRC_PATH)
 	$(AR) rc $@ $^

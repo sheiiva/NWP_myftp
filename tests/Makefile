@@ -26,8 +26,12 @@ CLIENT_PATH		=	$(ROOT_PATH)client/
 CLIENT_LIB		= 	$(CLIENT_PATH)libsrc/
 CLIENT_I_PATH	=	$(CLIENT_PATH)$(I_PATH)
 
+INCLUDES		=	-I./$(SERVER_I_PATH) 		\
+					-I./$(SERVER_I_PATH)defines	\
+					-I./$(CLIENT_I_PATH)
 
-override CFLAGS	    +=	-W -Wall -Wextra -Wextra -I./$(SERVER_I_PATH) -I./$(CLIENT_I_PATH) --coverage
+
+override CFLAGS	    +=	-W -Wall -Wextra -Wextra $(INCLUDES) --coverage
 override LDFLAGS    += 	-L./$(SERVER_LIB) -L./$(CLIENT_LIB)
 override LDLIBS     +=	-lcriterion -lserver -lclient
 
