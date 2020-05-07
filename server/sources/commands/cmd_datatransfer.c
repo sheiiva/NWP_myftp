@@ -9,18 +9,16 @@
 
 int cmd_retr(server_t *server, client_t *client)
 {
-    printf("RETR\n");
     (void)server;
     if (client->connected == false)
         return (write_to(client->fd, NOTLOGGEDIN));
-    return (0);
+    return (write_to(client->fd, NOTIMPLEMENTED));
 }
 
 int cmd_stor(server_t *server, client_t *client)
 {
-    printf("STOR\n");
     (void)server;
     if (client->connected == false)
         return (write_to(client->fd, NOTLOGGEDIN));
-    return (0);
+    return (write_to(client->fd, NOTIMPLEMENTED));
 }

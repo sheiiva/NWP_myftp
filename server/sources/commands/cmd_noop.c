@@ -12,5 +12,5 @@ int cmd_noop(server_t *server, client_t *client)
     (void)server;
     if (write_to(client->fd, COMMANDOK) == 84)
         return (84);
-    return (0);
+    return (write_to(client->fd, NOTIMPLEMENTED));
 }

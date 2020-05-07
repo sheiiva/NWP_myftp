@@ -42,6 +42,7 @@
     #define INSUFSTORAGE        "452 Requested action not taken: insufficient system storage.\n"
     #define WRONGCOMMAND        "500 Syntax error, command unrecognized.\n"
     #define WRONGARGUMENTS      "501 Syntax error in parameters or arguments.\n"
+    #define NOTIMPLEMENTED      "502 Command not implemented.\n"
     #define NOTLOGGEDIN         "530 Not logged in.\n"
     #define ERROR               "xxx"
 

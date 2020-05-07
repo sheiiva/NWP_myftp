@@ -29,7 +29,7 @@ int cmd_cdup(server_t *server, client_t *client)
     (void)server;
     if (client->connected == false)
         return (write_to(client->fd, NOTLOGGEDIN));
-    return (0);
+    return (write_to(client->fd, NOTIMPLEMENTED));
 }
 
 int cmd_pwd(server_t *server, client_t *client)
