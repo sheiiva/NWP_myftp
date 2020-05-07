@@ -42,7 +42,7 @@ int cmd_pwd(server_t *server, client_t *client)
         return (write_to(client->fd, NOTLOGGEDIN));
     else {
         output = malloc(sizeof(char) * pathlen);
-        memset(output, 0, pathlen);        
+        memset(output, 0, pathlen);
         strcpy(output, PATHNAMECREATED);
         strcat(output, "\n");
         strcat(output, client->path);

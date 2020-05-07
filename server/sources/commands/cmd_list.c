@@ -7,7 +7,7 @@
 
 #include "execute.h"
 
-static void getPath(server_t *server, client_t *client, char *path)
+static void getpath(server_t *server, client_t *client, char *path)
 {
     char *ptrpath = server->buffer + strlen(LIST) + 1;
 
@@ -53,7 +53,7 @@ int cmd_list(server_t *server, client_t *client)
 
     if (client->connected == false)
         return (write_to(client->fd, NOTLOGGEDIN));
-    getPath(server, client, buffer);
+    getpath(server, client, buffer);
     if (lsdir(client, buffer) == 84)
         return (write_to(client->fd, WRONGARGUMENTS));
     if (write_to(client->fd, CLOSEDATACONNECT) == 84)

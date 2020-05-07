@@ -39,7 +39,6 @@ int read_input(int fd, char *buffer)
         for (i = 0; i < readsize; i++) {
             if ((buffer[i] == '\r') || (buffer[i] == '\n'))
                 buffer[i] = '\0';
-            // CAREFULL EXTRA SPACES
         }
     }
     return (readsize);
