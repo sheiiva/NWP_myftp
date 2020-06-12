@@ -14,9 +14,12 @@ void initclients(client_t *clients, char *path)
     while (index < FD_SETSIZE) {
         clients[index].fd = 0;
         clients[index].connected = false;
-        memset(clients[index].path, 0, BUFFERSIZE);
-        strncpy(clients[index].path, path, BUFFERSIZE);
-        memset(clients[index].name, 0, BUFFERSIZE);
+        if (!memset(clients[index].path, 0, BUFFERSIZE)
+        || !strcpy(clients[index].path, path)
+        || !memset(clients[index].name, 0, BUFFERSIZE)) {
+            perror("clients_handler.c :: initclients");
+            return;
+        }
         index += 1;
     }
 }

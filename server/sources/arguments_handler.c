@@ -35,7 +35,10 @@ int checkpath(char *path)
 
 int getpath(char *argv, char *path)
 {
-    memset(path, 0, BUFFERSIZE);
+    if (!memset(path, 0, BUFFERSIZE)) {
+        perror("main.c :: memset");
+        return (84);
+    }
     if (getcwd(path, BUFFERSIZE) == NULL) {
         perror("main.c :: getcwd");
         return (84);
