@@ -8,7 +8,7 @@
 #ifndef CLIENT_H_
     #define CLIENT_H_
 
-    #define BUFFERSIZE 100
+    #define BUFFERSIZE 1024
     #define OPEN    1
     #define CLOSE   0
 

@@ -18,7 +18,7 @@
         int fd;
         bool connected;
         struct sockaddr_in socket;
-        char path[PATHSIZE];
+        char path[BUFFERSIZE];
         char name[BUFFERSIZE];
     } client_t;
 

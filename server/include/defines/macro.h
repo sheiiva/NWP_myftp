@@ -14,8 +14,7 @@
 
     #define COMMANDSNBR 12
 
-    #define BUFFERSIZE  100
-    #define PATHSIZE    256
+    #define BUFFERSIZE  1024
 
     typedef struct sockaddr sockaddr_t;
     typedef struct sockaddr_in sockaddr_in_t;

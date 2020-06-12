@@ -11,7 +11,7 @@ static void getpath(server_t *server, client_t *client, char *path)
 {
     char *ptrpath = server->buffer + strlen(LIST) + 1;
 
-    memset(path, 0, PATHSIZE);
+    memset(path, 0, BUFFERSIZE);
     if (!strcmp(server->buffer, LIST))
         strcpy(path, "./");
     else if (ptrpath[0] == '/' || ptrpath[0] == '~')
@@ -35,7 +35,7 @@ int lsdir(client_t *client, char *path)
     }
     if (write_to(client->fd, OPENDATACONNECT) == 84)
         return (84);
-    memset(path, 0, PATHSIZE);
+    memset(path, 0, BUFFERSIZE);
     while ((openeddir = readdir(dir))) {
         if (openeddir->d_name[0] != '.') {
             strcat(path, openeddir->d_name);
@@ -49,7 +49,7 @@ int lsdir(client_t *client, char *path)
 
 int cmd_list(server_t *server, client_t *client)
 {
-    char buffer[strlen(CLOSEDATACONNECT) + PATHSIZE + 1];
+    char buffer[strlen(CLOSEDATACONNECT) + BUFFERSIZE + 1];
 
     if (client->connected == false)
         return (write_to(client->fd, NOTLOGGEDIN));

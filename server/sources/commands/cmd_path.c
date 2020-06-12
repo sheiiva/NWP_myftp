@@ -14,7 +14,7 @@ int cmd_cwd(server_t *server, client_t *client)
     else if (checkpath((server->buffer + strlen("CWD "))) == 84) {
         write_to(client->fd, WRONGARGUMENTS);
     } else {
-        memset(client->path, 0, PATHSIZE);
+        memset(client->path, 0, BUFFERSIZE);
         strcpy(client->path, (server->buffer + strlen("CWD ")));
         write_to(client->fd, ACTIONOK);
     }

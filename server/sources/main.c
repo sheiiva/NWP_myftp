@@ -10,7 +10,7 @@
 
 int main(int ac, char **av)
 {
-    char path[PATHSIZE];
+    char path[BUFFERSIZE];
 
     if (ac == 2 && !strcmp(av[1], "-help"))
         return (write(1, USAGE, strlen(USAGE)) == -1 ? 84 : 0);
