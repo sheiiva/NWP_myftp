@@ -27,23 +27,24 @@ int readfd(int fd, char *buffer, int *state)
 int loop(int fd)
 {
     int state = OPEN;
-    int ret = 0;
     int readsize = 0;
     char buffer[BUFFERSIZE];
 
-    while (state == OPEN && !ret) {
-        if (readfd(fd, buffer, & state) == -1)
+    if (readfd(fd, buffer, &state) == -1)
+        return (84);
+    while (state == OPEN) {
+        if (write(1, ">> ", 4) == -1)
             return (84);
-        else if (state && write(1, ">> ", 4) == -1) {
-            ret = 84;
-        } else if (state && (readsize = read_stdin((char *)buffer)) == -1) {
-            ret = 84;
-        } else if (state && (write(fd, buffer, readsize) == -1)) {
+        if ((readsize = read_stdin((char *)buffer)) == -1)
+            return (84);
+        if (write(fd, buffer, readsize) == -1) {
             perror("client.c:: Write to Server");
-            ret = 84;
+            return (84);
         }
+        if (readfd(fd, buffer, &state) == -1)
+            return (84);
     }
-    return (ret);
+    return (0);
 }
 
 int client(char *addr, int port)
@@ -57,5 +58,5 @@ int client(char *addr, int port)
         return (84);
     if (connect_client(fd, &server) == 84)
         return (84);
-    return loop(fd);
+    return (loop(fd));
 }

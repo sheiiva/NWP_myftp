@@ -27,7 +27,6 @@
         int port;
         struct sockaddr_in socket;
         char buffer[BUFFERSIZE];
-    } server_t ;
-
+    } server_t;
 
 #endif /* !STRUCTURES_H_ */

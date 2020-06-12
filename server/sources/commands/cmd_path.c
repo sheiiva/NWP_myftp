@@ -12,13 +12,11 @@ int cmd_cwd(server_t *server, client_t *client)
     if (client->connected == false)
         return (write_to(client->fd, NOTLOGGEDIN));
     else if (checkpath((server->buffer + strlen("CWD "))) == 84) {
-        if (write_to(client->fd, WRONGARGUMENTS) == 84)
-            return (84);
+        write_to(client->fd, WRONGARGUMENTS);
     } else {
         memset(client->path, 0, PATHSIZE);
         strcpy(client->path, (server->buffer + strlen("CWD ")));
-        if (write_to(client->fd, ACTIONOK) == 84)
-            return (84);
+        write_to(client->fd, ACTIONOK);
     }
     return (0);
 }
@@ -46,8 +44,7 @@ int cmd_pwd(server_t *server, client_t *client)
         strcpy(output, PATHNAMECREATED);
         strcat(output, "\n");
         strcat(output, client->path);
-        if (write_to(client->fd, output) == 84)
-            return (84);
+        write_to(client->fd, output);
     }
     return (0);
 }
