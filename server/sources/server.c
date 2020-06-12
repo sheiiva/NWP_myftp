@@ -63,7 +63,7 @@ int server(int port, char *path)
     server.fd = create_socket();
     if (server.fd == -1)
         return (84);
-    if ((write(1, "Welcome on server!\n", 20) == -1)
+    if ((write_to(STDOUT_FILENO, "Welcome on server!\n") == -1)
     || (init_server(&server, port) == 84)
     || (listen_socket(server.fd) == 84)) {
         close_server(server.fd);
