@@ -35,7 +35,8 @@ int loop(int fd)
     while (state == OPEN) {
         if (write(1, ">> ", 4) == -1)
             return (84);
-        if ((readsize = read_stdin((char *)buffer)) == -1)
+        readsize = read_stdin((char *)buffer);
+        if (readsize == -1)
             return (84);
         if (write(fd, buffer, readsize) == -1) {
             perror("client.c:: Write to Server");
