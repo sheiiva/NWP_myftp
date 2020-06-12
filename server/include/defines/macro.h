@@ -12,7 +12,7 @@
     #define OPEN        1
     #define BACKLOG     3
 
-    #define COMMANDSNBR 13
+    #define COMMANDSNBR 12
 
     #define BUFFERSIZE  100
     #define PATHSIZE    256
