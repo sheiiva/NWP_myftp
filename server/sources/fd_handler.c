@@ -34,7 +34,7 @@ void initfds(fd_set *readfds, server_t server, client_t *clients, int *fdmax)
 
 int checkfds(server_t *server, client_t *clients, fd_set *readfds)
 {
-    int index = 0;
+    size_t index = 0;
 
     while (index < FD_SETSIZE) {
         if ((FD_ISSET(clients[index].fd, readfds))

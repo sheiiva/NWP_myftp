@@ -27,7 +27,7 @@ int close_server(int fd)
         perror("server.c:: Close socket");
         return (84);
     }
-    if (write(1, "Server closed\n", 15) == 84)
+    if (write(1, "Server closed\n", 15) == -1)
         return (84);
     return (0);
 }
@@ -43,11 +43,10 @@ int loop(server_t server, client_t *clients, char *path)
         if (select((fdmax + 1), &readfds , NULL , NULL , NULL) == -1) {
             perror("server.c:: Select");
             ret = 84;
-        } else {
-            if (FD_ISSET(server.fd, &readfds))
-                ret = add_client(clients, server.fd, path);
-            ret = checkfds(&server, clients, &readfds);
         }
+        if (FD_ISSET(server.fd, &readfds))
+            ret = add_client(clients, server.fd, path);
+        ret = checkfds(&server, clients, &readfds);
     }
     if (close_server(server.fd) == 84)
         ret = 84;
@@ -70,5 +69,5 @@ int server(int port, char *path)
         return (84);
     }
     initclients(clients, path);
-    return loop(server, (client_t *)clients, path);
+    return (loop(server, (client_t *)clients, path));
 }

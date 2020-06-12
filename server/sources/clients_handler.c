@@ -9,7 +9,7 @@
 
 void initclients(client_t *clients, char *path)
 {
-    int index = 0;
+    size_t index = 0;
 
     while (index < FD_SETSIZE) {
         clients[index].fd = 0;
@@ -36,8 +36,11 @@ int add_client(client_t *clients, int fdserver, char *path)
     } else {
         if (accept_connection(fdserver, &clients[index]) == 84)
             return (84);
-        memset(clients[index].path, 0, BUFFERSIZE);
-        strcpy(clients[index].path, path);
+        if (!memset(clients[index].path, 0, BUFFERSIZE)
+        || !strcpy(clients[index].path, path)) {
+            perror("clients_handler.c :: add_client");
+            return (84);
+        }
     }
     return (0);
 }

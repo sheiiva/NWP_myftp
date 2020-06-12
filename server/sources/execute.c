@@ -28,7 +28,10 @@ int read_input(int fd, char *buffer)
     int i = 0;
     int readsize = 0;
 
-    memset(buffer, 0, BUFFERSIZE);
+    if (!memset(buffer, 0, BUFFERSIZE)) {
+        perror("execute.c:: memset");
+        return (84);
+    }
     readsize = read(fd, buffer, BUFFERSIZE);
     if (readsize <= 0)
         perror("execute.c:: Read from server's fd");
@@ -47,7 +50,7 @@ int read_input(int fd, char *buffer)
 int command_parser(server_t *server, client_t *client)
 {
     int ret = 0;
-    int index = 0;
+    size_t index = 0;
 
     if (server->buffer[0] == 0)
         return (0);
@@ -69,7 +72,10 @@ int execute(server_t *server, client_t *clients, int index)
 {
     int readsize = 0;
 
-    memset(server->buffer, 0, BUFFERSIZE);
+    if (!memset(server->buffer, 0, BUFFERSIZE)) {
+        perror("execute.c:: execute :: memset");
+        return (84);
+    }
     readsize = read_input(clients[index].fd, (char *)server->buffer);
     if (readsize <= 0)
         return (close_client(clients, index, true));
