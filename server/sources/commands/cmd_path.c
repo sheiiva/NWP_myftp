@@ -38,13 +38,12 @@ int cmd_pwd(server_t *server, client_t *client)
     (void)server;
     if (client->connected == false)
         return (write_to(client->fd, NOTLOGGEDIN));
-    else {
-        output = malloc(sizeof(char) * pathlen);
-        memset(output, 0, pathlen);
-        strcpy(output, PATHNAMECREATED);
-        strcat(output, "\n");
-        strcat(output, client->path);
-        write_to(client->fd, output);
-    }
+    output = malloc(sizeof(char) * pathlen);
+    if (!output || !memset(output, 0, pathlen))
+        return (84);
+    strcpy(output, PATHNAMECREATED);
+    strcat(output, client->path);
+    write_to(client->fd, output);
+    free(output);
     return (0);
 }
