@@ -11,8 +11,8 @@ int init_server(server_t *server, int port)
 {
     server->socket.sin_family = AF_INET;
     server->socket.sin_port = htons(port);
-    server->socket.sin_addr.s_addr = INADDR_ANY;
-    if (bind(server->fd, (sockaddr_t *)&server->socket,
+    server->socket.sin_addr.s_addr = htonl(INADDR_ANY);
+    if (bind(server->fd, (sockaddr_t *)&(server->socket),
             sizeof(server->socket)) == -1) {
         perror("socket_manager.c:: Bind server");
         return (84);
