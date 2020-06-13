@@ -41,8 +41,10 @@ int loop(server_t server, client_t *clients, char *path)
         initfds(&readfds, server, clients, &fdmax);
         if (select((fdmax + 1), &readfds , NULL , NULL , NULL) == -1) {
             perror("server.c:: Select");
-            ret = 84;
-        } else if (FD_ISSET(server.fd, &readfds))
+            close_server(server.fd);
+            return (84);
+        }
+        if (FD_ISSET(server.fd, &readfds))
             ret = add_client(clients, server.fd, path);
         if (ret != 84)
             ret = checkfds(&server, clients, &readfds);

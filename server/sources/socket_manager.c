@@ -27,13 +27,15 @@ int listen_socket(int fd)
 
 int accept_connection(int fd_server, client_t *client)
 {
-    socklen_t addrlen = (socklen_t)sizeof(client->socket);
+    sockaddr_in_t newsocket;
+    socklen_t addrlen = sizeof(sockaddr_in_t);
 
-    client->fd = accept(fd_server, (sockaddr_t *)&client->socket, &addrlen);
+    client->fd = accept(fd_server, (sockaddr_t *)&newsocket, &addrlen);
     if (client->fd == -1) {
         perror("socket_manager.c:: Accept connection");
         return (84);
     }
+    client->socket = newsocket;
     if (write_to(client->fd, READYFORNEWUSER) == 84)
         return (84);
     if (printf("CLIENT:\n  .address: %s\n  .port: %d\n",
