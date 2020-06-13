@@ -17,7 +17,7 @@ SRC_LIB 	= 	$(LIBSRC_PATH)libserver.a
 INCLUDES		=	-I./$(INCLUDE_PATH)				\
 					-I./$(INCLUDE_PATH)defines		\
 
-override CFLAGS 	+=	-W -Wall -Werror -Wextra $(INCLUDES) -g
+override CFLAGS 	+=	-W -Wall -Werror -Wextra $(INCLUDES)
 override LDFLAGS 	+=
 override LDLIBS 	+=
 

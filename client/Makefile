@@ -13,7 +13,7 @@ LIBSRC_PATH         =   libsrc/
 NAME		=	$(ROOT_PATH)clients
 SRC_LIB 	= 	$(LIBSRC_PATH)libclient.a
 
-override CFLAGS 	+=	-W -Wall -Werror -Wextra -I./$(INCLUDE_PATH) -g
+override CFLAGS 	+=	-W -Wall -Werror -Wextra -I./$(INCLUDE_PATH)
 override LDFLAGS 	+=
 override LDLIBS 	+=
 

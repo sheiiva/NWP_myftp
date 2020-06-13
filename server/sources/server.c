@@ -12,7 +12,6 @@ int init_server(server_t *server, int port)
     server->socket.sin_family = AF_INET;
     server->socket.sin_port = htons(port);
     server->socket.sin_addr.s_addr = INADDR_ANY;
-    bzero(&(server->socket.sin_zero), 8);
     if (bind(server->fd, (sockaddr_t *)&server->socket,
             sizeof(server->socket)) == -1) {
         perror("socket_manager.c:: Bind server");
@@ -43,10 +42,10 @@ int loop(server_t server, client_t *clients, char *path)
         if (select((fdmax + 1), &readfds , NULL , NULL , NULL) == -1) {
             perror("server.c:: Select");
             ret = 84;
-        }
-        if (FD_ISSET(server.fd, &readfds))
+        } else if (FD_ISSET(server.fd, &readfds))
             ret = add_client(clients, server.fd, path);
-        ret = checkfds(&server, clients, &readfds);
+        if (ret != 84)
+            ret = checkfds(&server, clients, &readfds);
     }
     if (close_server(server.fd) == 84)
         ret = 84;

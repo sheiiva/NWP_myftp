@@ -35,10 +35,7 @@ int read_input(int fd, char *buffer)
     readsize = read(fd, buffer, BUFFERSIZE);
     if (readsize <= 0)
         perror("execute.c:: Read from server's fd");
-    else if (readsize == 1) {
-        if (write_to(fd, WRONGCOMMAND) == 84)
-            return (84);
-    } else {
+    else {
         for (i = 0; i < readsize; i++) {
             if ((buffer[i] == '\r') || (buffer[i] == '\n'))
                 buffer[i] = '\0';
@@ -52,8 +49,6 @@ int command_parser(server_t *server, client_t *client)
     int ret = 0;
     size_t index = 0;
 
-    if (server->buffer[0] == 0)
-        return (0);
     while (index < COMMANDSNBR) {
         if (!strncmp(server->buffer, commands[index].cmd,
                 strlen(commands[index].cmd))) {
