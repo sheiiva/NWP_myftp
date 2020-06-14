@@ -8,16 +8,16 @@
 #include "execute.h"
 
 static command_t commands[NBCOMMANDS] = {
+    {"CWD",     &cwd},
+    {"CDUP",    &cdup},
     {"HELP",    &help},
     {"LIST",    &list},
     {"NOOP",    &noop},
     {"PASS",    &pass},
+    {"PWD",     &pwd},
     {"USER",    &user},
     {"QUIT",    &quit},
-    // {"PWD", pwd},
-    // {"CDUP",    &cdup},
     // {"DELE",    &dele},
-    // {"CWD",     &cwd}
 };
 
 void remove_extra_spaces(char *str)
