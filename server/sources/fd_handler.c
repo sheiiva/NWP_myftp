@@ -7,40 +7,31 @@
 
 #include "fd_handler.h"
 
-int write_to(int fd, char *replycode)
+void initfds(server_t *server)
 {
-    if (write(fd, replycode, strlen(replycode)) == -1) {
-        perror(NULL);
-        return (84);
-    }
-    return (0);
-}
+    size_t i = 0;
 
-void initfds(fd_set *readfds, server_t server, client_t *clients, int *fdmax)
-{
-    int index = 0;
-
-    FD_ZERO(readfds);
-    FD_SET(server.fd, readfds);
-    *fdmax = server.fd;
-    while (index < FD_SETSIZE) {
-        if (clients[index].fd > 0)
-            FD_SET(clients[index].fd, readfds);
-        if (clients[index].fd > *fdmax)
-            *fdmax = clients[index].fd;
-        index += 1;
+    FD_ZERO(&(server->readfds));
+    FD_SET(server->sockfd, &(server->readfds));
+    server->max_sd = server->sockfd;
+    while (i < FD_SETSIZE) {
+        if (server->clients[i].sockfd > 0)
+            FD_SET(server->clients[i].sockfd, &(server->readfds));
+        if (server->clients[i].sockfd > server->max_sd)
+            server->max_sd = server->clients[i].sockfd;
+        i += 1;
     }
 }
 
-int checkfds(server_t *server, client_t *clients, fd_set *readfds)
+int check_fds(server_t *server)
 {
-    size_t index = 0;
+    size_t i = 0;
 
-    while (index < FD_SETSIZE) {
-        if ((FD_ISSET(clients[index].fd, readfds))
-            && (execute(server, clients, index) == 84))
-            return (84);
-        index += 1;
+    while (i < FD_SETSIZE) {
+        if (FD_ISSET(server->clients[i].sockfd, &(server->readfds))
+        && (server_system(server, i) == 84))
+            return (FAILURE);
+        i += 1;
     }
-    return (0);
+    return (SUCCESS);
 }

@@ -5,35 +5,28 @@
 ** execute.h
 */
 
-#ifndef EXECUTE_H_
-    #define EXECUTE_H_
+#ifndef _EXECUTE_H_
+    #define _EXECUTE_H_
 
-    #include <stdio.h>
     #include <string.h>
-    #include <unistd.h>
+    #include "protocol.h"
+    #include "structures.h"
+    #include "io_handler.h"
 
-    #include "arguments_handler.h"
-    #include "clients_handler.h"
+    #define NBCOMMANDS 4
 
-    typedef struct commands_s {
+    typedef struct command_s {
         char *cmd;
-        int (*function)(server_t *, client_t *);
-    } commands_t;
+        int (*function)(server_t *, int);
+    } command_t;
 
-    int execute(server_t *server, client_t *clients, int index);
-    int show_usage(client_t *client);
+    void remove_extra_spaces(char *str);
+    void clean_input(char *buffer);
+    int execute(server_t *server, int index);
 
-    int cmd_user(server_t *server, client_t *client);
-    int cmd_pass(server_t *server, client_t *client);
-    int cmd_cwd(server_t *server, client_t *client);
-    int cmd_cdup(server_t *server, client_t *client);
-    int cmd_pwd(server_t *server, client_t *client);
-    int cmd_pasv(server_t *server, client_t *client);
-    int cmd_port(server_t *server, client_t *client);
-    int cmd_help(server_t *server, client_t *client);
-    int cmd_noop(server_t *server, client_t *client);
-    int cmd_retr(server_t *server, client_t *client);
-    int cmd_stor(server_t *server, client_t *client);
-    int cmd_list(server_t *server, client_t *client);
+    int noop(server_t *server, int index);
+    int user(server_t *server, int index);
+    int pass(server_t *server, int index);
+    int quit(server_t *server, int index);
 
-#endif /* !EXECUTE_H_ */
+#endif /* !_EXECUTE_H_ */

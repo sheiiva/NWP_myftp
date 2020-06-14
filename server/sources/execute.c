@@ -5,77 +5,58 @@
 ** execute.c
 */
 
-#include <errno.h>
 #include "execute.h"
 
-static commands_t commands[COMMANDSNBR] = {
-            {USER,    &cmd_user},
-            {PASS,    &cmd_pass},
-            {CWD,     &cmd_cwd},
-            {CDUP,    &cmd_cdup},
-            {PWD,     &cmd_pwd},
-            {PASV,    &cmd_pasv},
-            {PORT,    &cmd_port},
-            {HELPM,   &cmd_help},
-            {NOOP,    &cmd_noop},
-            {RETR,    &cmd_retr},
-            {STOR,    &cmd_stor},
-            {LIST,    &cmd_list}
-    };
+static command_t commands[NBCOMMANDS] = {
+    {"NOOP",    &noop},
+    {"USER",    &user},
+    {"PASS",    &pass},
+    {"QUIT",    &quit}
+    // {"PWD", pwd},
+    // {"HELP",    &help},
+    // {"CDUP",    &cdup},
+    // {"DELE",    &dele},
+    // {"CWD",     &cwd}
+};
 
-int read_input(int fd, char *buffer)
+void remove_extra_spaces(char *str)
 {
-    int i = 0;
-    int readsize = 0;
+    size_t i = 0;
+    size_t x = 0;
 
-    if (!memset(buffer, 0, BUFFERSIZE)) {
-        perror("execute.c:: memset");
-        return (84);
+    while (str[i]) {
+        if (str[i] != ' ' || (i > 0 && str[i - 1] != ' '))
+            str[x++] = str[i];
+        i += 1;
     }
-    readsize = read(fd, buffer, BUFFERSIZE);
-    if (readsize <= 0)
-        perror("execute.c:: Read from server's fd");
-    else {
-        for (i = 0; i < readsize; i++) {
-            if ((buffer[i] == '\r') || (buffer[i] == '\n'))
-                buffer[i] = '\0';
-        }
-    }
-    return (readsize);
+    while (x < BUFFERSIZE)
+        str[x++] = '\0';
 }
 
-int command_parser(server_t *server, client_t *client)
+void clean_input(char *buffer)
 {
-    int ret = 0;
-    size_t index = 0;
+    size_t i = 0;
 
-    while (index < COMMANDSNBR) {
-        if (!strncmp(server->buffer, commands[index].cmd,
-                strlen(commands[index].cmd))) {
-            ret = commands[index].function(server, client);
-            memset(server->buffer, 0, BUFFERSIZE);
-            return (ret);
-        }
-        index += 1;
+    while (i < BUFFERSIZE) {
+        if (buffer[i] == '\r' || buffer[i] == '\n')
+            buffer[i] = '\0';
+        if (buffer[i] == '\t')
+            buffer[i] = ' ';
+        i += 1;
     }
-    if (write_to(client->fd, WRONGCOMMAND) == 84)
-        return (84);
-    return (0);
+    remove_extra_spaces(buffer);
 }
 
-int execute(server_t *server, client_t *clients, int index)
+int execute(server_t *server, int index)
 {
-    int readsize = 0;
+    size_t i = 0;
 
-    if (!memset(server->buffer, 0, BUFFERSIZE)) {
-        perror("execute.c:: execute :: memset");
-        return (84);
+    while (i < NBCOMMANDS) {
+        if (!strncmp(server->buffer, commands[i].cmd, strlen(commands[i].cmd)))
+            return (commands[i].function(server, index));
+        i += 1;
     }
-    readsize = read_input(clients[index].fd, (char *)server->buffer);
-    if (readsize <= 0)
-        return (close_client(clients, index, true));
-    else if (!strncmp(server->buffer, QUIT, strlen(QUIT)))
-        return (close_client(clients, index, false));
-    else
-        return (command_parser(server, &clients[index]));
+    if (write_to(server->clients[index].sockfd, WRONGCOMMAND) == 84)
+        return (FAILURE);
+    return (SUCCESS);
 }

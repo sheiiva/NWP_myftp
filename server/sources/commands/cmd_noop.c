@@ -7,10 +7,9 @@
 
 #include "execute.h"
 
-int cmd_noop(server_t *server, client_t *client)
+int noop(server_t *server, int index)
 {
-    (void)server;
-    if (write_to(client->fd, COMMANDOK) == 84)
-        return (84);
-    return (write_to(client->fd, NOTIMPLEMENTED));
+    if (write_to(server->clients[index].sockfd, COMMANDOK) == 84)
+        return (FAILURE);
+    return (SUCCESS);
 }

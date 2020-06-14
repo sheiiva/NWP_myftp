@@ -9,66 +9,59 @@
 
 int init_server(server_t *server, int port)
 {
-    server->socket.sin_family = AF_INET;
-    server->socket.sin_port = htons(port);
-    server->socket.sin_addr.s_addr = htonl(INADDR_ANY);
-    if (bind(server->fd, (sockaddr_t *)&(server->socket),
-            sizeof(server->socket)) == -1) {
-        perror("socket_manager.c:: Bind server");
-        return (84);
-    }
-    return (0);
-}
+    size_t i = 0;
 
-int close_server(int fd)
-{
-    if (close(fd) == -1) {
-        perror("server.c:: Close socket");
-        return (84);
-    }
-    if (write(1, "Server closed\n", 15) == -1)
-        return (84);
-    return (0);
-}
-
-int loop(server_t server, client_t *clients, char *path)
-{
-    int fdmax = 0;
-    int ret = 0;
-    fd_set readfds;
-
-    while (!ret) {
-        initfds(&readfds, server, clients, &fdmax);
-        if (select((fdmax + 1), &readfds , NULL , NULL , NULL) == -1) {
-            perror("server.c:: Select");
-            close_server(server.fd);
-            return (84);
+    server->sockfd = create_socket();
+    if (server->sockfd == -1)
+        return (FAILURE);
+    if (server_socket(server, port) == 84)
+        return (FAILURE);
+    if (listen_socket(server->sockfd, port) == 84)
+        return (FAILURE);
+    while (i < FD_SETSIZE) {
+        server->clients[i].sockfd = 0;
+        server->clients[i].state = DISCONNECTED;
+        if (!memset(server->clients[i].name, 0, BUFFERSIZE)
+        || !memset(server->clients[i].password, 0, BUFFERSIZE)) {
+            perror("memset");
+            return (FAILURE);
         }
-        if (FD_ISSET(server.fd, &readfds))
-            ret = add_client(clients, server.fd, path);
-        if (ret != 84)
-            ret = checkfds(&server, clients, &readfds);
+        i += 1;
     }
-    if (close_server(server.fd) == 84)
-        ret = 84;
-    return (ret);
+    server->addrlen = sizeof(server->addr);
+    return (SUCCESS);
+}
+
+int server_system(server_t *server, int index)
+{
+    int readsize = read_input(server->clients[index].sockfd, server->buffer);
+
+    if (readsize <= 0)
+        return (quit(server, index));
+    clean_input(server->buffer);
+    if (execute(server, index) == 84)
+        return (FAILURE);
+    FD_CLR(server->clients[index].sockfd, &(server->readfds));
+    return (SUCCESS);
 }
 
 int server(int port, char *path)
 {
     server_t server;
-    client_t clients[FD_SETSIZE];
 
-    server.port = port;
-    server.fd = create_socket();
-    if (server.fd == -1)
-        return (84);
-    if ((write_to(STDOUT_FILENO, "Welcome on server!\n") == -1)
-    || (init_server(&server, port) == 84)
-    || (listen_socket(server.fd) == 84)) {
-        close_server(server.fd);
-        return (84);
+    path = path;
+    if (init_server(&server, port) == 84)
+        return (FAILURE);
+    while (true) {
+        initfds(&server);
+        if (select_newclient(&server) == 84)
+            return (FAILURE);
+        if (check_fds(&server) == 84)
+            return (FAILURE);
     }
-    initclients(clients, path);
-    return (loop(server, (client_t *)clients, path));
+    if (close(server.sockfd) == -1) {
+        perror("close");
+        return (FAILURE);
+    }
+    return (SUCCESS);
 }

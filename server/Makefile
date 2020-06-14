@@ -24,18 +24,14 @@ override LDLIBS 	+=
 COMMANDS_PATH		=	$(SRC_PATH)commands/
 
 TEST_SRC		=	$(SRC_PATH)arguments_handler.c	\
-					$(SRC_PATH)clients_handler.c	\
+					$(SRC_PATH)client_handler.c	\
 					$(SRC_PATH)execute.c			\
 					$(SRC_PATH)fd_handler.c			\
+					$(SRC_PATH)io_handler.c			\
 					$(SRC_PATH)server.c				\
-					$(SRC_PATH)socket_manager.c		\
-					$(COMMANDS_PATH)cmd_connect.c		\
-					$(COMMANDS_PATH)cmd_datatransfer.c	\
-					$(COMMANDS_PATH)cmd_help.c			\
-					$(COMMANDS_PATH)cmd_list.c			\
-					$(COMMANDS_PATH)cmd_mode.c			\
-					$(COMMANDS_PATH)cmd_noop.c			\
-					$(COMMANDS_PATH)cmd_path.c			\
+					$(SRC_PATH)socket_handler.c		\
+					$(COMMANDS_PATH)cmd_log.c		\
+					$(COMMANDS_PATH)cmd_noop.c		\
 
 TESTOBJ		= 	$(TEST_SRC:.c=.o)
 

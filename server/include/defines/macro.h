@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2019
-** SERVER // INCLUDE
+** SERVER // INCLUDE // DEFINES
 ** File description:
 ** macro.h
 */
@@ -8,12 +8,17 @@
 #ifndef MACRO_H_
     #define MACRO_H_
 
-    #define CLOSE       0
-    #define OPEN        1
+    enum client_state {
+        DISCONNECTED = 0,
+        CONNECTED = 1
+    };
+
+    enum return_state {
+        SUCCESS = 0,
+        FAILURE = 84
+    };
+
     #define BACKLOG     3
-
-    #define COMMANDSNBR 12
-
     #define BUFFERSIZE  1024
 
     typedef struct sockaddr sockaddr_t;
