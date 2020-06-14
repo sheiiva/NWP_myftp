@@ -16,7 +16,7 @@ int init_server(server_t *server, int port)
         return (FAILURE);
     if (server_socket(server, port) == 84)
         return (FAILURE);
-    if (listen_socket(server->sockfd, port) == 84)
+    if (listen_socket(server->sockfd) == 84)
         return (FAILURE);
     while (i < FD_SETSIZE) {
         server->clients[i].sockfd = 0;
@@ -52,6 +52,7 @@ int server(int port, char *path)
     path = path;
     if (init_server(&server, port) == 84)
         return (FAILURE);
+    printf("__ WELCOME ON YOUR SERVER! __\n");
     while (true) {
         initfds(&server);
         if (select_newclient(&server) == 84)

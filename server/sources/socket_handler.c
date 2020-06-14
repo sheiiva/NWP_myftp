@@ -16,13 +16,12 @@ int create_socket(void)
     return (newsock);
 }
 
-int listen_socket(int sockfd, int port)
+int listen_socket(int sockfd)
 {
     if (listen(sockfd, BACKLOG) == -1) {
         perror("listen");
         return (FAILURE);
     }
-    printf("Listening from port %d.\n", port);
     return (SUCCESS);
 }
 
