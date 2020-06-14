@@ -23,7 +23,6 @@ int init_server(server_t *server, int port)
         server->clients[i].state = DISCONNECTED;
         if (!memset(server->clients[i].name, 0, BUFFERSIZE)
         || !memset(server->clients[i].password, 0, BUFFERSIZE)) {
-            perror("memset");
             return (FAILURE);
         }
         i += 1;
