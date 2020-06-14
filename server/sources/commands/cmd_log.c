@@ -11,11 +11,6 @@ int user(server_t *server, int index)
 {
     size_t cmdlen = strlen("USER ");
 
-    if (strlen(server->buffer) <= cmdlen) {
-        if (write_to(server->clients[index].sockfd, WRONGCOMMAND) == 84)
-            return (FAILURE);
-        return (SUCCESS);
-    }
     if (write_to(server->clients[index].sockfd, USERNAMEOK) == 84)
         return (FAILURE);
     if ((!memset(server->clients[index].name, 0, BUFFERSIZE))
