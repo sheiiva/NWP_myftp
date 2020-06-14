@@ -13,7 +13,7 @@
     #include "structures.h"
     #include "io_handler.h"
 
-    #define NBCOMMANDS 11
+    #define NBCOMMANDS 12
 
     typedef struct command_s {
         char *cmd;
@@ -26,6 +26,7 @@
 
     int cdup(server_t *server, int index);
     int cwd(server_t *server, int index);
+    int dele(server_t *server, int index);
     int help(server_t *server, int index);
     int list(server_t *server, int index);
     int noop(server_t *server, int index);

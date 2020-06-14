@@ -51,6 +51,7 @@
     #define WRONGARGUMENTS\
         "501 Syntax error in parameters or arguments.\r\n"
     #define NOTIMPLEMENTED      "502 Command not implemented.\r\n"
+    #define ACTIONNOTTAKEN      "550 Requested action not taken.\r\n"
     #define ERROR               "xxx"
 
 #endif /* !PROTOCOL_H_ */

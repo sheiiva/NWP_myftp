@@ -10,6 +10,7 @@
 static command_t commands[NBCOMMANDS] = {
     {"CWD",     &cwd},
     {"CDUP",    &cdup},
+    {"DELE",    &dele},
     {"HELP",    &help},
     {"LIST",    &list},
     {"NOOP",    &noop},
@@ -19,7 +20,6 @@ static command_t commands[NBCOMMANDS] = {
     {"PWD",     &pwd},
     {"USER",    &user},
     {"QUIT",    &quit},
-    // {"DELE",    &dele},
 };
 
 void remove_extra_spaces(char *str)
