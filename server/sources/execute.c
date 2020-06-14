@@ -16,7 +16,7 @@ static command_t commands[NBCOMMANDS] = {
     {"NOOP",    &noop},
     {"PASS",    &pass},
     {"PASV",    &pasv},
-    {"PORT",    &port},    
+    {"PORT",    &port},
     {"PWD",     &pwd},
     {"USER",    &user},
     {"QUIT",    &quit},
