@@ -8,12 +8,12 @@
 #include "execute.h"
 
 static command_t commands[NBCOMMANDS] = {
+    {"HELP",    &help},
     {"NOOP",    &noop},
-    {"USER",    &user},
     {"PASS",    &pass},
-    {"QUIT",    &quit}
+    {"USER",    &user},
+    {"QUIT",    &quit},
     // {"PWD", pwd},
-    // {"HELP",    &help},
     // {"CDUP",    &cdup},
     // {"DELE",    &dele},
     // {"CWD",     &cwd}
