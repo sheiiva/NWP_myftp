@@ -40,7 +40,6 @@ int select_newclient(server_t *server)
         while (i < FD_SETSIZE) {
             if (server->clients[i].sockfd <= 0) {
                 server->clients[i].sockfd = server->new_sockfd;
-                server->clients[i].state = CONNECTED;
                 break;
             }
             i += 1;

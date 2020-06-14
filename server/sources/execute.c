@@ -9,6 +9,7 @@
 
 static command_t commands[NBCOMMANDS] = {
     {"HELP",    &help},
+    {"LIST",    &list},
     {"NOOP",    &noop},
     {"PASS",    &pass},
     {"USER",    &user},

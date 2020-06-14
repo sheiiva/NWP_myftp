@@ -31,6 +31,7 @@ TEST_SRC		=	$(SRC_PATH)arguments_handler.c	\
 					$(SRC_PATH)server.c				\
 					$(SRC_PATH)socket_handler.c		\
 					$(COMMANDS_PATH)cmd_help.c		\
+					$(COMMANDS_PATH)cmd_list.c		\
 					$(COMMANDS_PATH)cmd_log.c		\
 					$(COMMANDS_PATH)cmd_noop.c		\
 
